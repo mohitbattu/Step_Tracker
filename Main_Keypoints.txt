@@ -1,0 +1,22 @@
+Stateful widget:
+A stateful widget is dynamic: for example, 
+it can change its appearance in response to 
+events triggered by user interactions or when 
+it receives data. Checkbox, Radio, Slider, InkWell, 
+Form, and TextField are examples of stateful widgets. 
+Stateful widgets subclass StatefulWidget.
+StateLessWidget:
+A stateless widget never changes.
+Icon, IconButton, and Text are examples of 
+stateless widgets. Stateless widgets subclass 
+StatelessWidget.
+
+Scaffold:
+Scaffold is a class in flutter 
+which provides many widgets or we can say APIs 
+like Drawer, SnackBar, BottomNavigationBar, 
+FloatingActionButton, AppBar etc. Scaffold will 
+expand or occupy the whole device screen. It will occupy 
+the available space. Scaffold will provide a framework 
+to implement the basic material design layout of the 
+application.
