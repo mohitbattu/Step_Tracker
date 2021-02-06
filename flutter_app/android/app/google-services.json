@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "980011090020",
+    "project_id": "steptracker-4397a",
+    "storage_bucket": "steptracker-4397a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980011090020:android:95e346dd385926d5141f71",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980011090020-sek4hkhgcvklh4c1pf1mno4ubod9e8d7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmgLzwp0huKkUZ0LqaBa_d2v3xkWavgXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980011090020-sek4hkhgcvklh4c1pf1mno4ubod9e8d7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
