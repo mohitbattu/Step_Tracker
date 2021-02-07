@@ -3,15 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/screens/User_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_app/Backend_models/firebase.dart';
-import 'package:flutter_app/screens/widgets.dart';
+import 'package:flutter_app/Backend_models/Userdatabackpart/widgets.dart';
 import 'package:validators/validators.dart' as validator;
-import 'package:flutter_app/Backend_models/signback.dart';
-import 'package:flutter_app/Backend_models/signresult.dart';
+import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
+import 'package:flutter_app/Backend_models/signbackpart/signresult.dart';
 
 void main() async{
 await Firebase.initializeApp();
 }
 class SignupForm extends StatefulWidget {
+  
   @override
   _SignupFormState createState() => _SignupFormState();
 }
@@ -22,13 +23,13 @@ class _SignupFormState extends State<SignupForm> {
   TextEditingController _passwordInputController = TextEditingController();
   TextEditingController _selectedGenderController = TextEditingController();
   
-  final auth = FirebaseAuth.instance;
+    final auth = FirebaseAuth.instance;
   
   
+    final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     Signbackend model = Signbackend();
     return Form(
       key: _formKey,
@@ -45,8 +46,6 @@ class _SignupFormState extends State<SignupForm> {
       body: SafeArea(
               child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
-              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
                   SizedBox(height:50),
@@ -67,8 +66,8 @@ class _SignupFormState extends State<SignupForm> {
                         
                         style: TextStyle(fontSize: 18, color: Colors.white),
                         decoration: InputDecoration(
-                          /*hintText: 'Password',
-                          hintStyle: TextStyle(color: Colors.white)*/
+                          hintText: 'Tony Stark',
+                          hintStyle: TextStyle(color: Colors.grey[300],fontSize: 15),
                           contentPadding:
                           EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
                           border: OutlineInputBorder(
@@ -76,9 +75,11 @@ class _SignupFormState extends State<SignupForm> {
                           ),
                           icon: Icon(Icons.account_circle,color: Colors.white,),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(125.0)),
                             borderSide: BorderSide(color: Colors.pink)
                           ),
                           enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(125.0)),
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           labelText: "FullName",labelStyle: TextStyle(color: Colors.white),
@@ -94,7 +95,7 @@ class _SignupFormState extends State<SignupForm> {
                     },
                       ),
                     ),
-                    SizedBox(height:15),
+                    SizedBox(height:25),
                   Container(
                     width: MediaQuery.of(context).size.width*0.93,
                     child: TextFormField(
@@ -102,6 +103,8 @@ class _SignupFormState extends State<SignupForm> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
+                        hintText: 'xyz@yahoo.com',
+                        hintStyle: TextStyle(color: Colors.grey[300],fontSize: 15),
                         contentPadding:
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
                         border: OutlineInputBorder(
@@ -109,9 +112,11 @@ class _SignupFormState extends State<SignupForm> {
                         ),
                         icon: Icon(Icons.attach_email_rounded,color: Colors.white,),
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(125.0)),
                             borderSide: BorderSide(color: Colors.yellow)// Focused border changes the light when clicked.
                         ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(125.0)),
                           borderSide: BorderSide(color: Colors.white),
                         ),
                         labelText: "Email",labelStyle: TextStyle(color: Colors.white),
@@ -127,7 +132,7 @@ class _SignupFormState extends State<SignupForm> {
                     },
                     ),
                   ),
-                  SizedBox(height:15),
+                  SizedBox(height:25),
                   Container(
                     width: MediaQuery.of(context).size.width*0.93,
                       child: TextFormField(
@@ -135,8 +140,8 @@ class _SignupFormState extends State<SignupForm> {
                         style: TextStyle(fontSize: 18, color: Colors.white),
                         obscureText: true,
                         decoration: InputDecoration(
-                          /*hintText: 'Password',
-                          hintStyle: TextStyle(color: Colors.white)*/
+                          hintText: 'password123',
+                          hintStyle: TextStyle(color: Colors.grey[300],fontSize: 15),
                           contentPadding:
                           EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
                           border: OutlineInputBorder(
@@ -144,9 +149,11 @@ class _SignupFormState extends State<SignupForm> {
                           ),
                           icon: Icon(Icons.lock,color: Colors.white,),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(125.0)),
                             borderSide: BorderSide(color: Colors.greenAccent)
                           ),
                           enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(125.0)),
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           labelText: "Password",labelStyle: TextStyle(color: Colors.white),
@@ -165,9 +172,9 @@ class _SignupFormState extends State<SignupForm> {
                     },
                       ),
                     ),
-                    SizedBox(height:20),
+                    SizedBox(height:30),
                     Container(
-                      width: MediaQuery.of(context).size.width*0.93,
+                      width: MediaQuery.of(context).size.width*0.95,
                       child: Text("Gender",style: new TextStyle(fontFamily: 'Lora',fontSize: 16.0,
                           fontWeight: FontWeight.bold, color: Colors.white),),
                     ),
@@ -185,9 +192,9 @@ class _SignupFormState extends State<SignupForm> {
               onPressed: () async{
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                   await signUpSetup(_fullNameController.text,_emailInputController.text,_selectedGenderController.text);
-                   await auth.createUserWithEmailAndPassword(email: _emailInputController.text,password: _passwordInputController.text,);
-                   Navigator.push(context, MaterialPageRoute(builder:(context) => userData()));
+                await auth.createUserWithEmailAndPassword(email: _emailInputController.text,password: _passwordInputController.text,);
+                   Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _fullNameController,email: _emailInputController,gender: _selectedGenderController)));
+                   
                 }
               },
               /*style: ElevatedButton.styleFrom(
@@ -200,7 +207,7 @@ class _SignupFormState extends State<SignupForm> {
                      ),
                   SizedBox(height:10),
                   Container(
-                    child: Text("By continuing, you agree to accept our terms and conditions",
+                    child: Text("By continuing, you agree to accept our Terms and Conditions",
                   style: TextStyle(fontFamily: 'Lora',fontSize: 8.0, fontWeight: FontWeight.bold,color: Colors.white),
                   ),
                   ),
@@ -228,8 +235,8 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                     )*/
                 ],
-              ),
-            ],
+        
+            
           ),
         ),
       ),

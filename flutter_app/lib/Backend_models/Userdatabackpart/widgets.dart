@@ -64,7 +64,7 @@ class CustomRadio extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String,Color> map = {"Male": Colors.green,"Female": Colors.pink,"Others": Colors.red};
     return Container(
-      decoration: BoxDecoration(color: !gender.isSelected ? Colors.white : map[gender.name]),
+      decoration: BoxDecoration(color: !gender.isSelected ? Colors.white12 : map[gender.name]),
       height: 20,
       width: 40,
       alignment: Alignment.center,
@@ -75,14 +75,14 @@ class CustomRadio extends StatelessWidget {
         children: <Widget>[
           Icon(
             gender.icon,
-            color: gender.isSelected ? Colors.white : Colors.grey,
+            color: gender.isSelected ? Colors.white : Colors.white,
             size: 16,
           ),
           SizedBox(height: 4),
           Text(
             gender.name,
             style: TextStyle(
-                color: gender.isSelected ? Colors.white : Colors.grey,fontSize: 10,fontWeight: FontWeight.w300),
+                color: gender.isSelected ? Colors.white : Colors.white,fontSize: 10,fontWeight: FontWeight.w300),
           )
         ],
       ),

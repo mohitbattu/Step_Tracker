@@ -16,22 +16,24 @@ class accountCreated extends StatelessWidget {
         ),
       ),
 
-      body: Container(
-        child: Stack(children: <Widget>[
-          Center(
-          child: Image.asset('Images/Check.jpeg',scale: 0.1),),
-          Padding(
-              padding: const EdgeInsets.only(
-                  left: 90,
-                  top: 70,
-                  right: 50,
-                  bottom: 0
+      body: SafeArea(
+              child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+              SizedBox(height: 20),
+              Container(
+                  child: Text("Account Created Successfully!",style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),
+                ),
+        ),
+        SizedBox(height:125),
+        Image.asset('Images/Check.jpeg',scale: 0.1),
+              ],
               ),
-              child: Text("Account Created Successfully!",style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),
-            ),
-      ),
-          ],
           ),
+        ),
       ),
     );
   }
