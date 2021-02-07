@@ -62,7 +62,7 @@ class CustomRadio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String,Color> map = {"Male": Colors.green,"Female": Colors.yellow,"Others": Colors.red};
+    final Map<String,Color> map = {"Male": Colors.green,"Female": Colors.pink,"Others": Colors.red};
     return Container(
       decoration: BoxDecoration(color: !gender.isSelected ? Colors.white : map[gender.name]),
       height: 20,

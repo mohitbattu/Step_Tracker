@@ -8,6 +8,7 @@ class Basescreen extends StatelessWidget {
       title: "Step Tracker",
       home: Scaffold(
         body: Container(
+          
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             image: DecorationImage(
