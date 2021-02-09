@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Backend_models/loader.dart';
+import 'package:flutter_app/Backend_models/loading.dart';
 import 'package:flutter_app/screens/Login_secnd.dart';
+class Basescreen extends StatefulWidget {
+  @override
+  _BasescreenState createState() => _BasescreenState();
+}
 
-class Basescreen extends StatelessWidget {
+class _BasescreenState extends State<Basescreen> {
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return isloading ? Loading(): MaterialApp(
       title: "Step Tracker",
       home: Scaffold(
         body: Container(
@@ -20,23 +27,26 @@ class Basescreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new TextButton(
+              MaterialButton(
                 child: CircleAvatar(
                   backgroundColor: Colors.yellow,
                   radius: 80.0,
                   child: Column(
                     children: <Widget> [
-
-                      Text("\n\n\n\nWelcome to Step Tracker\n",style: TextStyle(fontFamily: 'Lora',fontSize: 13.0, fontWeight: FontWeight.bold,color: Colors.black)
+                      SizedBox(height: 60),
+                      Text("Welcome to Step Tracker",style: TextStyle(fontFamily: 'Lora',fontSize: 13.0, fontWeight: FontWeight.bold,color: Colors.black)
                       ),
-
-                      Text("Tap to Continue\n",style: new TextStyle(fontFamily: 'Lora',fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.black),),
-
+                      
+                      SizedBox(height:30),
+                      Text("Tap to Continue",style: new TextStyle(fontFamily: 'Lora',fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.black),),
+                     
                     ],
                   ),
                 ),
                   onPressed: (){
+                    setState(()=> isloading=true);
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                    setState(()=> isloading=false);
                   },
         ),
               
@@ -63,6 +73,8 @@ class Basescreen extends StatelessWidget {
       ),
       );
   }
+  
 }
+
 
 

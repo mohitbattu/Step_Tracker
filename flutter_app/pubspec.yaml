@@ -30,16 +30,20 @@ dependencies:
   http: ^0.12.0+4
   provider: ^4.0.4
   firebase_core: ^0.7.0
+  firebase_analytics: ^1.0.4
   firebase_auth: ^0.20.0+1
-  cloud_firestore: 
+  cloud_firestore: ^0.16.0
   image_picker: ^0.6.7+22
   material_design_icons_flutter:
   firebase_storage: ^7.0.0
   validators: ^2.0.0+1
-  google_sign_in:
+  rflutter_alert: ^1.0.2
+  google_sign_in: ^4.5.9
+  font_awesome_flutter: ^8.2.0
   # The following ad ds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  rxdart: 0.20.0
 
 
 dev_dependencies:

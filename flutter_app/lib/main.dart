@@ -12,10 +12,7 @@ class Welcome extends StatelessWidget {
     return MaterialApp(
       title: 'Step Tracker',
       theme: ThemeData(primaryColor: Colors.black,scaffoldBackgroundColor: Colors.black,unselectedWidgetColor: Colors.white),
-
-      home: Basescreen(),
-
-
+      home: Basescreen(),    
     );
   }
 }
