@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/Backend_models/GoogleBackend.dart';
 import 'package:flutter_app/Backend_models/loading.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
 import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
+import 'package:flutter_app/screens/GoogleHandling.dart';
 import 'package:flutter_app/screens/Signup.dart';
 import 'package:flutter_app/Backend_models/loader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,19 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth =FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = new GoogleSignIn();
-  Future<User> _signIn() async{
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
-    AuthCredential credential = GoogleAuthProvider.credential(
-    accessToken: gSA.accessToken,
-    idToken: gSA.idToken,
-  );
-    UserCredential user = await _auth.signInWithCredential(credential);
-    User currentUser=user.user;
-    return currentUser;
-  }
   String _email, _password;
   final _formKey = GlobalKey<FormState>();
   bool isloading = false;
@@ -61,25 +50,33 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(width: 50),
                                     
                                     MaterialButton(
-                                      
                                     //color: Colors.red,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
                                   highlightElevation: 0,
                                   //borderSide: BorderSide(color: Colors.grey),
-                                  color: Colors.red,
+                                  color: Colors.grey[800],
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Image(image: AssetImage("Images/google_logo.png")),
+                                      Image(image: AssetImage("Images/google_logo.png"),height: 25),
                                       SizedBox(width:10),
                                       Text("Google",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
-                                      fontWeight: FontWeight.bold, color: Colors.white),
+                                      fontWeight: FontWeight.bold, color: Colors.white70),
                                   ),
                                     ]
                                   ),
                                     onPressed: () {
-                                       Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                                      setState(()=> isloading=true);
+
+                                      signInWithGoogle().whenComplete(() {Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                                            return GoogleUser();
+                                              },
+                                           ),
+                                             );
+                                           });
+                                          setState(()=> isloading=true);
+                                       
                                       },
                                     ),
                                       ],
