@@ -4,12 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
 import 'package:flutter_app/Backend_models/loading.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
-import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
-import 'package:flutter_app/screens/GoogleHandling.dart';
+import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/screens/Signup.dart';
-import 'package:flutter_app/Backend_models/loader.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validators/validators.dart' as validator;
 class LoginScreen extends StatefulWidget {
@@ -47,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child:Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children:[
-                                    SizedBox(width: 50),
+                                    SizedBox(width: 30),
                                     
                                     MaterialButton(
                                     //color: Colors.red,
@@ -66,17 +63,44 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                     ]
                                   ),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      
                                       setState(()=> isloading=true);
-
-                                      signInWithGoogle().whenComplete(() {Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                                            return GoogleUser();
-                                              },
-                                           ),
-                                             );
-                                           });
-                                          setState(()=> isloading=true);
+                                      var gdls=await signInWithGoogle();
+                                      await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                                      setState(()=> isloading=false);
                                        
+                                      },
+                                    ),
+                                    SizedBox(width: 20),
+                                    Text("or",
+                  style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),),
+                                    SizedBox(width:20),
+                                    MaterialButton(
+                                    //color: Colors.red,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                  highlightElevation: 0,
+                                  //borderSide: BorderSide(color: Colors.grey),
+                                  color: Colors.grey[800],
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image(image: AssetImage("Images/Facebook.png"),height: 25),
+                                      SizedBox(width:10),
+                                      Text("Facebook",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
+                                      fontWeight: FontWeight.bold, color: Colors.white70),
+                                  ),
+                                    ]
+                                  ),
+                                    onPressed: () async{
+                                      //TODO Create a FaceBook Authentication.
+                                      setState(()=> isloading=true);
+                                      var fdls=await onFacebookLogIn();
+                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                                      setState(()=> isloading = false);
                                       },
                                     ),
                                       ],

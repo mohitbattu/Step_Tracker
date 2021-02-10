@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/Backend_models/Facebook.dart';
+import 'package:flutter_app/Backend_models/GoogleBackend.dart';
 import 'package:flutter_app/Backend_models/loader.dart';
 import 'package:flutter_app/Backend_models/loading.dart';
 import 'package:flutter_app/Backend_models/widgets.dart';
@@ -9,6 +11,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:validators/validators.dart' as validator;
 import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
+
+import 'Login_secnd.dart';
 
 void main() async{
 await Firebase.initializeApp();
@@ -251,7 +255,6 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                   style: TextStyle(fontFamily: 'Lora',fontSize: 8.0, fontWeight: FontWeight.bold,color: Colors.white),
                   ),
                   ),
-                  /*
                   SizedBox(height: 10),
                   Row(
                       children: [
@@ -261,7 +264,13 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                            width:160.0,
                            color:Colors.white,
                            ),
-                           SizedBox(width: 50),
+                           SizedBox(width: 20),
+                           Container(
+                  child: Text("or",
+                  style: TextStyle(fontFamily: 'Lora',fontSize: 17.0, fontWeight: FontWeight.bold,color: Colors.white),
+                  ),
+                    ),
+                    SizedBox(width: 20),
                            Container(
                   height:1.0,
                   width:160.0,
@@ -269,11 +278,65 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                       ],
                     ),
                     SizedBox(height: 10),
-                    Container(
-                  child: Text("or",
-                  style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),
-                  ),
-                    )*/
+
+                Container(
+                  width: MediaQuery.of(context).size.width*0.8,
+                    child:MaterialButton(
+                      
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              color: Colors.white,
+              
+              
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+                  SizedBox(width:40),
+                   Image(image: AssetImage("Images/google_logo.png"),height: 25),
+                   SizedBox(width:20),
+                  Text('Sign Up With Google',style: new TextStyle(fontFamily: 'Lora',fontSize: 16.0,
+                          fontWeight: FontWeight.bold, color: Colors.grey[700])),
+                          ],
+              ),
+                          
+              onPressed: () async{
+                setState(()=> isloading=true);
+                                      var details=await signInWithGoogle();
+                                      await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));//TODO change it to Home Screen
+                                      setState(()=> isloading=false);
+              },
+          ),
+          ),
+
+          SizedBox(width: 20),
+          Container(
+                  width: MediaQuery.of(context).size.width*0.8,
+                    child:MaterialButton(
+                      
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              color: Colors.indigo[700],
+              
+              
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+                  SizedBox(width:40),
+                   Image(image: AssetImage("Images/facebookwhite.png"),height: 30),
+                   SizedBox(width:20),
+                  Text('Sign Up With Facebook',style: new TextStyle(fontFamily: 'Lora',fontSize: 16.0,
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                          ],
+              ),
+                          
+              onPressed: () async{
+                setState(()=> isloading=true);
+                var fdls=await onFacebookLogIn();
+                await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);
+                Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                setState(()=> isloading = false);
+              },
+          ),
+          ),     
                 ],
         
             

@@ -5,7 +5,7 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
  String name,email,imageUrl;
 
-Future <String> signInWithGoogle() async {
+Future <Map<String,String>> signInWithGoogle() async {
  
   
  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -21,22 +21,26 @@ Future <String> signInWithGoogle() async {
   name = user.displayName;
   email = user.email;
   imageUrl = user.photoURL;
-  return 'succeeded: $user';
+  var details={'names': name.toString(),'emails': email.toString(),'urls': imageUrl.toString()};
+  return details;
 }
 
-
-Future<void> signUpGoogleSetup(String weight,String height, String age,String gender,String name,String email,String imageurl) async {
-  CollectionReference register = FirebaseFirestore.instance.collection('GoogleUsers');
+Future<String> signUpGoogleSetup(String name,String email,String imageurl) async {
+  CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
   //DocumentReference userId = FirebaseFirestore.instance.collection('register').doc();
   //print("$fullName $email $gender");
   FirebaseAuth auth = FirebaseAuth.instance;
-  String uid = auth.currentUser.uid.toString();
-  await register.add({'Name': name, 'email': email,'Weight': weight,'Height(cms)': height,'age': age,'gender': gender,'ImageUrl': imageurl,'uid': uid});
+  String uid = auth.currentUser.uid.toString(); 
+  DateTime time = DateTime.now();
+  await register.doc(uid).set({'Name': name, 'email': email,'ImageUrl': imageurl,'Log_in_time': time,'uid': uid,});
   //return uid;//.then((value){
     //return value.id.toString();
   //}); 
 //users.add({'displayName': displayName, 'uid': uid});
 }
+
+
+
 
 
 void signOutGoogle() async{

@@ -7,7 +7,7 @@ class Loading extends StatelessWidget {
     return Container(
       color: Colors.grey[900],
       child: Center(child:
-      ColorLoader3(dotRadius: 20.0 ,radius: 40.0), 
+      ColorLoader3(dotRadius: 20.0 ,radius: 30.0), 
       ),
     );
   }
