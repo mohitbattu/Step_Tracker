@@ -97,8 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () async{
                                       //TODO Create a FaceBook Authentication.
                                       setState(()=> isloading=true);
+                                      try{
                                       var fdls=await onFacebookLogIn();
-                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);
+                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);}
+                                      catch(e){
+                                        print(e);
+                                      }
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
                                       setState(()=> isloading = false);
                                       },
