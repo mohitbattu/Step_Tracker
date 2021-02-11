@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
-import 'package:flutter_app/Backend_models/loading.dart';
+import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
 import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/screens/Signup.dart';
-
+import 'package:flutter_app/screens/HomeScreen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validators/validators.dart' as validator;
 class LoginScreen extends StatefulWidget {
@@ -66,10 +66,36 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () async {
                                       
                                       setState(()=> isloading=true);
+                                      try{
                                       var gdls=await signInWithGoogle();
                                       await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
                                       setState(()=> isloading=false);
+                                      }
+                                      catch(e){
+                                        setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                                      }
                                        
                                       },
                                     ),
@@ -99,12 +125,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                       setState(()=> isloading=true);
                                       try{
                                       var fdls=await onFacebookLogIn();
-                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);}
+                                      print(fdls);
+                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                                      setState(()=> isloading = false);}
                                       catch(e){
-                                        print(e);
+                                        setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
                                       }
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
-                                      setState(()=> isloading = false);
+                                      
                                       },
                                     ),
                                       ],
@@ -219,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       try{
                                       await auth.signInWithEmailAndPassword(email: _email, password: _password).then((_){
 
-                                        Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                                        Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                                         setState(()=> isloading=false);// Move to 6th Fragment
                                         });}
                                         catch(e){

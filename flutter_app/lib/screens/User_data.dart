@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Backend_models/Userdatabackpart/userback.dart';
 import 'package:flutter_app/Backend_models/firebase.dart';
-import 'package:flutter_app/Backend_models/loading.dart';
+import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/screens/account_created.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';

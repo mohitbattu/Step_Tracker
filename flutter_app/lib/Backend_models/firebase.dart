@@ -9,7 +9,7 @@ Future<String> signUpSetup(String fullName,String email, String gender) async {
   String uid = auth.currentUser.uid.toString();
 
   await register.doc(uid).set({'fullName': fullName, 'email': email, 'gender': gender,'uid': uid});
-  return uid;//.then((value){
+  //return uid;//.then((value){
     //return value.id.toString();
   //}); 
 //users.add({'displayName': displayName, 'uid': uid});

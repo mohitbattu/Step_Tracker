@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
-import 'package:flutter_app/Backend_models/loader.dart';
-import 'package:flutter_app/Backend_models/loading.dart';
+import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/Backend_models/widgets.dart';
 import 'package:flutter_app/screens/User_data.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -195,8 +194,6 @@ class _SignupFormState extends State<SignupForm> {
                      child:MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               color: Colors.red[900],
-              
-              
               child:Text('Next',style: new TextStyle(fontFamily: 'Montserrat',fontSize: 16.0,
                           fontWeight: FontWeight.bold, color: Colors.white)),
                           
@@ -300,10 +297,36 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                           
               onPressed: () async{
                 setState(()=> isloading=true);
+                try{
                                       var details=await signInWithGoogle();
                                       await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));//TODO change it to Home Screen
-                                      setState(()=> isloading=false);
+                                      setState(()=> isloading=false);}
+                  catch(e){
+                    setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                  }
+                                     
               },
           ),
           ),
@@ -330,10 +353,36 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                           
               onPressed: () async{
                 setState(()=> isloading=true);
+                try{
                 var fdls=await onFacebookLogIn();
-                await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['userId'],fdls['email'],fdls['accessToken']);
+                await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
                 Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
-                setState(()=> isloading = false);
+                setState(()=> isloading = false);}
+                catch(e){
+                  setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                }
+                
               },
           ),
           ),     

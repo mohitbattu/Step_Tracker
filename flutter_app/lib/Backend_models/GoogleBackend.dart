@@ -2,27 +2,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
+
+GoogleSignIn _googleSignIn = GoogleSignIn();
  String name,email,imageUrl;
 
 Future <Map<String,String>> signInWithGoogle() async {
- 
   
- final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+ final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
-
+  
   final AuthCredential credential = GoogleAuthProvider.credential(
     accessToken: googleSignInAuthentication.accessToken,
     idToken: googleSignInAuthentication.idToken,);
+  
   final UserCredential authResult = await _auth.signInWithCredential(credential);
+  //bool checkuser = await  getCheck(authResult.user.uid.toString());
   final User user = authResult.user; 
   final User currentUser =  _auth.currentUser;
-  assert(user.uid == currentUser.uid);
   name = user.displayName;
   email = user.email;
   imageUrl = user.photoURL;
   var details={'names': name.toString(),'emails': email.toString(),'urls': imageUrl.toString()};
   return details;
+
+
 }
 
 Future<String> signUpGoogleSetup(String name,String email,String imageurl) async {
@@ -42,7 +45,6 @@ Future<String> signUpGoogleSetup(String name,String email,String imageurl) async
 
 
 
-
 void signOutGoogle() async{
-  await googleSignIn.signOut();
+  await _googleSignIn.signOut();
 }

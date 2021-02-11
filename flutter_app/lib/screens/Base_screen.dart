@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Backend_models/loader.dart';
-import 'package:flutter_app/Backend_models/loading.dart';
+import 'package:flutter_app/Backend_models/loading/loader.dart';
+import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/screens/Login_secnd.dart';
 class Basescreen extends StatefulWidget {
   @override
