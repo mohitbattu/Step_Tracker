@@ -6,9 +6,10 @@ import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
 import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/screens/Signup.dart';
-import 'package:flutter_app/screens/HomeScreen.dart';
+import 'package:flutter_app/screens/NavigationScreen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validators/validators.dart' as validator;
+import 'package:flutter_app/screens/passwordreset.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       try{
                                       var gdls=await signInWithGoogle();
                                       await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                                       setState(()=> isloading=false);
                                       }
                                       catch(e){
@@ -247,8 +248,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                                 ),
+                                ),//TODO ADD Forgot Password.
+                                SizedBox(height: 10),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                      
+                                      child: Text("Forgot Your Password?",style: TextStyle(
+                                        decoration: TextDecoration.underline,fontSize: 10,fontFamily: 'Lora',fontWeight: FontWeight.bold,color: Colors.blue
+                                      ),),
+                                      onPressed: (){
+                                        setState(()=> isloading=true);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PasswordReset()));
+                                        setState(()=> isloading=false);
+                                      },
+                                    ),
                                 ),
-                                SizedBox(height: 30),
+                                SizedBox(height: 10),
                                 Container(
                                   width: MediaQuery.of(context).size.width*0.3,
                                   //width: double.infinity,

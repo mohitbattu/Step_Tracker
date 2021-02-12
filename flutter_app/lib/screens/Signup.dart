@@ -12,6 +12,7 @@ import 'package:validators/validators.dart' as validator;
 import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
 
 import 'Login_secnd.dart';
+import 'NavigationScreen.dart';
 
 void main() async{
 await Firebase.initializeApp();
@@ -300,7 +301,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                 try{
                                       var details=await signInWithGoogle();
                                       await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));//TODO change it to Home Screen
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));//TODO change it to Home Screen
                                       setState(()=> isloading=false);}
                   catch(e){
                     setState(()=> isloading= false);
@@ -356,7 +357,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                 try{
                 var fdls=await onFacebookLogIn();
                 await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                 setState(()=> isloading = false);}
                 catch(e){
                   setState(()=> isloading= false);

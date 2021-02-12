@@ -29,20 +29,27 @@ class _BasescreenState extends State<Basescreen> {
             children: <Widget>[
               MaterialButton(
                 child: CircleAvatar(
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Colors.grey[900],
                   radius: 80.0,
                   child: Column(
                     children: <Widget> [
-                      SizedBox(height: 60),
-                      Text("Welcome to Step Tracker",style: TextStyle(fontFamily: 'Lora',fontSize: 13.0, fontWeight: FontWeight.bold,color: Colors.black)
+                      SizedBox(height:10),
+                      Image.asset("Images/Logo.jpg",height: MediaQuery.of(context).size.height*0.05),
+                      SizedBox(height: 20),
+                      Text("Welcome to Step Tracker",style: TextStyle(fontFamily: 'Lora',fontSize: 13.0, fontWeight: FontWeight.bold,color: Colors.white)
                       ),
                       
-                      SizedBox(height:30),
-                      Text("Tap to Continue",style: new TextStyle(fontFamily: 'Lora',fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.black),),
+                      SizedBox(height:10),
+                      Text("Tap to Continue",style: new TextStyle(fontFamily: 'Lora',fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),),
                      
                     ],
+
                   ),
                 ),
+                elevation: 50,
+                focusElevation: 50,
+                //hoverElevation: 5000,
+                highlightElevation: 5,
                   onPressed: (){
                     setState(()=> isloading=true);
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
