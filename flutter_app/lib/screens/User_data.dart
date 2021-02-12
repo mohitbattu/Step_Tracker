@@ -22,15 +22,15 @@ class _UserDataState extends State<UserData> {
   TextEditingController _ageController = TextEditingController();
    bool isloading = false;
    File _uploadedimage;
+   final picker = ImagePicker();
    Future takeImage() async {
-      // ignore: deprecated_member_use
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      final image = await picker.getImage(source: ImageSource.gallery);
       setState(() {
-        _uploadedimage = image;
-          //print('Image Path $_uploadedimage');
+        _uploadedimage = File(image.path);
+          print('Image Path $_uploadedimage');
       });
     }
-  uploadImage(String uid) async {
+ Future <String> uploadImage(String uid) async {
       Reference reference = FirebaseStorage.instance.ref("user_profile").child(uid);
       await reference.putFile(_uploadedimage);
       print("Image Added");

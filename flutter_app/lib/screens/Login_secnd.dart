@@ -34,132 +34,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: 10),
-                      
                       CircleAvatar(
                                 radius: 120.0,
                                 backgroundColor: Colors.yellow,
                                 backgroundImage: AssetImage('Images/Logo.jpg'),
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                child:Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children:[
-                                    SizedBox(width: 30),
-                                    
-                                    MaterialButton(
-                                    //color: Colors.red,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                                  highlightElevation: 0,
-                                  //borderSide: BorderSide(color: Colors.grey),
-                                  color: Colors.grey[800],
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Image(image: AssetImage("Images/google_logo.png"),height: 25),
-                                      SizedBox(width:10),
-                                      Text("Google",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
-                                      fontWeight: FontWeight.bold, color: Colors.white70),
-                                  ),
-                                    ]
-                                  ),
-                                    onPressed: () async {
-                                      
-                                      setState(()=> isloading=true);
-                                      try{
-                                      var gdls=await signInWithGoogle();
-                                      await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
-                                      setState(()=> isloading=false);
-                                      }
-                                      catch(e){
-                                        setState(()=> isloading= false);
-                  Alert(context: context,
-                  type: AlertType.error,
-      title: "Error",
-      desc: e.toString(),
-      buttons: [
-        DialogButton(
-          gradient: LinearGradient(colors: [
-            Color.fromRGBO(116, 116, 191, 1.0),
-            Color.fromRGBO(52, 138, 199, 1.0)
-          ]),
-
-          child: Text(
-            "Ok",
-            
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-          width: 120,
-        )
-      ],
-    ).show();
-                                      }
-                                       
-                                      },
-                                    ),
-                                    SizedBox(width: 20),
-                                    Text("or",
-                  style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),),
-                                    SizedBox(width:20),
-                                    MaterialButton(
-                                    //color: Colors.red,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                                  highlightElevation: 0,
-                                  //borderSide: BorderSide(color: Colors.grey),
-                                  color: Colors.grey[800],
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Image(image: AssetImage("Images/Facebook.png"),height: 25),
-                                      SizedBox(width:10),
-                                      Text("Facebook",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
-                                      fontWeight: FontWeight.bold, color: Colors.white70),
-                                  ),
-                                    ]
-                                  ),
-                                    onPressed: () async{
-                                      //TODO Create a FaceBook Authentication.
-                                      setState(()=> isloading=true);
-                                      try{
-                                      var fdls=await onFacebookLogIn();
-                                      print(fdls);
-                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
-                                      setState(()=> isloading = false);}
-                                      catch(e){
-                                        setState(()=> isloading= false);
-                  Alert(context: context,
-                  type: AlertType.error,
-      title: "Error",
-      desc: e.toString(),
-      buttons: [
-        DialogButton(
-          gradient: LinearGradient(colors: [
-            Color.fromRGBO(116, 116, 191, 1.0),
-            Color.fromRGBO(52, 138, 199, 1.0)
-          ]),
-
-          child: Text(
-            "Ok",
-            
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-          width: 120,
-        )
-      ],
-    ).show();
-                                      }
-                                      
-                                      },
-                                    ),
-                                      ],
-                              ),
-                                  
                               ),
                               SizedBox(height: 50),
                               Container(
@@ -266,11 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  width: MediaQuery.of(context).size.width*0.3,
+                                  width: MediaQuery.of(context).size.width*0.8,
+                                  height: MediaQuery.of(context).size.width*0.1,
                                   //width: double.infinity,
                                   child: MaterialButton(
-                                    //color: Colors.red,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8),side: BorderSide(color: Colors.purple)),
+                                    
+                                    color: Colors.red[900],
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                               
                                   child: Text("Login",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 16.0,
                                       fontWeight: FontWeight.bold, color: Colors.white),
@@ -306,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                                 ),
           
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               Container(
                                 width: MediaQuery.of(context).size.width*0.6,
                                 child: Row(
@@ -328,6 +208,148 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ],
                                 ),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                      children: [
+                        SizedBox(width: 25),
+                        Container(
+                           height:1.0,
+                           width:120.0,
+                           color:Colors.white,
+                           ),
+                           SizedBox(width: 10),
+                           Container(
+                  child: Text("Sign In With",
+                  style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),
+                  ),
+                    ),
+                    SizedBox(width: 10),
+                           Container(
+                  height:1.0,
+                  width:120.0,
+                  color:Colors.white,),
+                      ],
+                    ),
+                    SizedBox(height:30),
+                    Container(
+                                child:Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children:[
+                                    SizedBox(width: 40),
+                                    MaterialButton(
+                                    //color: Colors.red,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                  highlightElevation: 0,
+                                  //borderSide: BorderSide(color: Colors.grey),
+                                  color: Colors.grey[800],
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image(image: AssetImage("Images/google_logo.png"),height: 25),
+                                      SizedBox(width:10),
+                                      Text("Google",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
+                                      fontWeight: FontWeight.bold, color: Colors.white70),
+                                  ),
+                                    ]
+                                  ),
+                                    onPressed: () async {
+                                      
+                                      setState(()=> isloading=true);
+                                      try{
+                                      var gdls=await signInWithGoogle();
+                                      await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                                      setState(()=> isloading=false);
+                                      }
+                                      catch(e){
+                                        setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                                      }
+                                       
+                                      },
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text("or",
+                  style: TextStyle(fontFamily: 'Lora',fontSize: 15.0, fontWeight: FontWeight.bold,color: Colors.white),),
+                                    SizedBox(width:10),
+                                    MaterialButton(
+                                    //color: Colors.red,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                  highlightElevation: 0,
+                                  //borderSide: BorderSide(color: Colors.grey),
+                                  color: Colors.grey[800],
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image(image: AssetImage("Images/Facebook.png"),height: 25),
+                                      SizedBox(width:10),
+                                      Text("Facebook",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 20.0,
+                                      fontWeight: FontWeight.bold, color: Colors.white70),
+                                  ),
+                                    ]
+                                  ),
+                                    onPressed: () async{
+                                      //TODO Create a FaceBook Authentication.
+                                      setState(()=> isloading=true);
+                                      try{
+                                      var fdls=await onFacebookLogIn();
+                                      print(fdls);
+                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                                      setState(()=> isloading = false);}
+                                      catch(e){
+                                        setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
+                                      }
+                                      
+                                      },
+                                    ),
+                                      ],
+                              ),
+                                  
                               ),
                 ],
               ),

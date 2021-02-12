@@ -13,6 +13,7 @@ Future<String> signUpSetup(String fullName,String email, String gender) async {
     //return value.id.toString();
   //}); 
 //users.add({'displayName': displayName, 'uid': uid});
+return uid;
 }
 
 Future<void> userSetup(String imglocation,String userid,String weight,String height, String age) async {
