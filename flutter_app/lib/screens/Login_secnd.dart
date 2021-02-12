@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     contentPadding:
                                     EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                      borderRadius: BorderRadius.all(Radius.circular(125.0)),
                                     ),
                                     icon: Icon(Icons.lock,color: Colors.white,),
                                     focusedBorder: OutlineInputBorder(

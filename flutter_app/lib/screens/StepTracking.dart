@@ -8,7 +8,7 @@ class StepTracker extends StatefulWidget {
 class _StepTrackerState extends State<StepTracker> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return MaterialApp(
       
     );
   }
