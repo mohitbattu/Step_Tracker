@@ -17,13 +17,12 @@ class _NavigationBarState extends State<NavigationBar> {
         body: PageView(
           controller: pages,
           children:[
-            HomeDesignFlow(),
+            HomeDesignFlow(index: pages),
             Text('I am in PageView'),//TODO Create the Statistics of the Everyday steps.
             ]
             ),
         ),
       );
-
   }
 }
 

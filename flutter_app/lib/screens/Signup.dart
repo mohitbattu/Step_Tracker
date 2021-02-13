@@ -3,15 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
 import 'package:flutter_app/Backend_models/loading/loading.dart';
-import 'package:flutter_app/Backend_models/widgets.dart';
+import 'package:flutter_app/Backend_models/Widgets/widgets.dart';
 import 'package:flutter_app/screens/User_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:validators/validators.dart' as validator;
 import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
-
-import 'Login_secnd.dart';
 import 'NavigationScreen.dart';
 
 void main() async{

@@ -23,7 +23,7 @@ class _UserDataState extends State<UserData> {
    bool isloading = false;
    File _uploadedimage;
    final picker = ImagePicker();
-   Future takeImage() async {
+Future takeImage() async {
       final image = await picker.getImage(source: ImageSource.gallery);
       setState(() {
         _uploadedimage = File(image.path);
