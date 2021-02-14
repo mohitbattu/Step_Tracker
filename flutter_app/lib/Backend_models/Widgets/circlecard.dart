@@ -25,8 +25,8 @@ class CircleCard extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width*0.53,
       //height: MediaQuery.of(context).size.height/20,
-      margin: EdgeInsets.symmetric(horizontal: 1,vertical: 66),
-      padding: EdgeInsets.fromLTRB(65, 30, 60, 5),
+      margin: EdgeInsets.symmetric(vertical:64),
+      padding: EdgeInsets.only(top:30),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: imag,
@@ -43,7 +43,7 @@ class CircleCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text(
                 title.toUpperCase(),

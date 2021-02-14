@@ -2,6 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/StepTracking.dart';
 
+import 'Calendar.dart';
+
 class HomeDesignFlow extends StatefulWidget {
   var index;
   HomeDesignFlow({this.index});
@@ -12,7 +14,7 @@ class HomeDesignFlow extends StatefulWidget {
 class _HomeDesignFlowState extends State<HomeDesignFlow> {
   int _page = 1;
   final windows=[
-Text('Hey'),
+Calendar(),
 StepTracker(),
 Text('I am die'),
 ];

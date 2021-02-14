@@ -84,6 +84,7 @@ class _StepTrackerState extends State<StepTracker> {
                         achieved: 350,
                         type: ' Kcal',
                       ),
+                      
                       ],
                     ),
                   ),
