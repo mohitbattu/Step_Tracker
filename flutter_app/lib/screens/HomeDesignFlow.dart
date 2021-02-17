@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/StepTracking.dart';
-
+import 'package:flutter_app/screens/Weather.dart';
+import 'package:kf_drawer/kf_drawer.dart';
 import 'Calendar.dart';
-
 class HomeDesignFlow extends StatefulWidget {
   var index;
   HomeDesignFlow({this.index});
@@ -13,16 +13,18 @@ class HomeDesignFlow extends StatefulWidget {
 
 class _HomeDesignFlowState extends State<HomeDesignFlow> {
   int _page = 1;
+ // KFDrawerController _drawerController;
   final windows=[
 Calendar(),
 StepTracker(),
-Text('I am die'),
+WeatherStat(),
 ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
       appBar: AppBar(
-            automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           title: Text("Step Tracker",style: new TextStyle(fontFamily: 'Lora',fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white)),
           centerTitle: true,
           toolbarHeight: 60.2,
@@ -37,8 +39,6 @@ Text('I am die'),
                 pages.animateToPage(2,duration:Duration(milliseconds: 250),curve: Curves.bounceInOut);
               } ,
                 ),
-
-
           ],
         ),
       bottomNavigationBar: CurvedNavigationBar(

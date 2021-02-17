@@ -22,12 +22,18 @@ environment:
 
 dependencies:
   flutter:
-
+  
     sdk: flutter
-
+  kf_drawer: ^1.1.2
+  weather_widget:
+  flutter_weather_bg: ^2.8.2
+  dynamic_weather_icons: ^1.1.4
+  weather_icons: ^2.0.2
+  weather: ^1.2.4
+  geolocator: ^6.2.0
   flutter_svg: ^0.18.1
   adobe_xd: ^1.0.0+1
-  http: ^0.12.0+4
+  http: ^0.12.2
   provider: ^4.0.4
   firebase_core: ^0.7.0
   firebase_analytics: ^1.0.4
@@ -50,9 +56,10 @@ dependencies:
   percent_indicator: ^2.1.9+1
   table_calendar: ^2.3.3
   intl: ^0.16.1
-  # The following ad ds the Cupertino Icons font to your application.
+  geocoding: ^1.0.5
+  # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: 
   rxdart: 0.20.0
   
 dev_dependencies:
@@ -70,7 +77,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - Images/
     - Images/
     - Images/Weather/
 

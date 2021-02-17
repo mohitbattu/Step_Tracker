@@ -28,6 +28,7 @@ class _BasescreenState extends State<Basescreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               MaterialButton(
+                shape: CircleBorder(),
                 child: CircleAvatar(
                   backgroundColor: Colors.grey[900],
                   radius: 80.0,
