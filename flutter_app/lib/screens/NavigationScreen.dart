@@ -8,7 +8,6 @@ class NavigationBar extends StatefulWidget {
 
 class _NavigationBarState extends State<NavigationBar> {
    PageController pages = PageController(initialPage: 0);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

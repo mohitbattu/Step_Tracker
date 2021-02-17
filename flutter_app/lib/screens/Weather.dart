@@ -1,9 +1,12 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:weather_icons/weather_icons.dart';
 import 'package:dynamic_weather_icons/dynamic_weather_icons.dart';
+
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class WeatherStat extends StatefulWidget {
 
@@ -21,19 +24,47 @@ class _WeatherStatState extends State<WeatherStat> {
   String weathertype;
   String weathertypes1;
   String weatherdescription;
- // String weathericons;
- // String wcod;
- // String wmodcod;
-  List<String> weathercodes1   =     [];
- List<String> maxtemp1      =       [];
- List<String> mintemp1      =    [];
+  List<String> weathercodes1=[];
+ List<String> maxtemp1 = [];
+ List<String> mintemp1 = [];
   List<Weather> wfive=[];
   List<Weather> _fivedays=[];
+  Connectivity netcheck = Connectivity();
+  String checkValue(var net) {
+  String status = '';
+  switch (net) {
+    case ConnectivityResult.none:
+      status = 'None';
+      break;
+  }
+  return status;
+}
+
   @override
  initState() {
     super.initState();
     getCurrentWeather();
+    checkConnectivity();
   }
+  void checkConnectivity() async {
+    var net = await netcheck.checkConnectivity();
+    var result = checkValue(net);
+    if(result=="None"){
+        Alert(
+          context: context,
+          content: Text('You have poor or No Internet connection'),
+                  type: AlertType.error,
+      title: "No Network",
+      buttons: [DialogButton(
+            gradient: LinearGradient(colors: [
+           Color.fromRGBO(116, 116, 191, 1.0),
+          Color.fromRGBO(52, 138, 199, 1.0)]),
+          child: Text(
+          "Ok",style: TextStyle(color: Colors.white, fontSize: 20),),
+        onPressed: () => Navigator.of(context, rootNavigator: true).pop(),width: 120,)], 
+    ).show();
+    }
+ } 
 
 void getCurrentWeather() async{
      WeatherFactory wf = new WeatherFactory('f3e5e858f1e18489361dcfde6e91918f');

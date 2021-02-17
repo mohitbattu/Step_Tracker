@@ -24,7 +24,7 @@ dependencies:
   flutter:
   
     sdk: flutter
-  kf_drawer: ^1.1.2
+  connectivity: ^0.4.2
   weather_widget:
   flutter_weather_bg: ^2.8.2
   dynamic_weather_icons: ^1.1.4
@@ -56,7 +56,7 @@ dependencies:
   percent_indicator: ^2.1.9+1
   table_calendar: ^2.3.3
   intl: ^0.16.1
-  geocoding: ^1.0.5
+ 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: 
