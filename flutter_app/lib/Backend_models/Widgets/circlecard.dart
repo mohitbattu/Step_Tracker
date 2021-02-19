@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 class CircleCard extends StatelessWidget {
   final String title;
-  final double achieved;
+  final String achieved;
   final String type;
   final AssetImage imag;
   final Color hcolor;
   final Color subhcolor;
   final Color bordercolor;
+    
   const CircleCard({
     Key key,
     @required this.title,
@@ -19,6 +20,7 @@ class CircleCard extends StatelessWidget {
     @required this.subhcolor,
      @required this.bordercolor,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

@@ -10,11 +10,11 @@ class BarChartSample3State extends State<BarChartSample3> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 0.8,
+      aspectRatio: 0.540,
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        color: const Color(0xff2c4260),
+        color: const Color(0xFF3A3A3A),
         child: BarChart(
           BarChartData(
             alignment: BarChartAlignment.spaceAround,
