@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:weather_icons/weather_icons.dart';
 import 'package:dynamic_weather_icons/dynamic_weather_icons.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class WeatherStat extends StatefulWidget {
@@ -29,6 +29,7 @@ class _WeatherStatState extends State<WeatherStat> {
  List<String> mintemp1 = [];
   List<Weather> wfive=[];
   List<Weather> _fivedays=[];
+ RefreshController _refreshController = RefreshController(initialRefresh: false);
   Connectivity netcheck = Connectivity();
   String checkValue(var net) {
   String status = '';
@@ -46,7 +47,13 @@ class _WeatherStatState extends State<WeatherStat> {
     getCurrentWeather();
     checkConnectivity();
   }
-  void checkConnectivity() async {
+void _refreshingWeather() async{
+  await checkConnectivity();
+  await getCurrentWeather();
+  await Future.delayed(Duration(seconds:2));
+    _refreshController.refreshCompleted();
+  }
+  Future<void> checkConnectivity() async {
     var net = await netcheck.checkConnectivity();
     var result = checkValue(net);
     if(result=="None"){
@@ -66,7 +73,7 @@ class _WeatherStatState extends State<WeatherStat> {
     }
  } 
 
-void getCurrentWeather() async{
+Future<void> getCurrentWeather() async{
      WeatherFactory wf = new WeatherFactory('f3e5e858f1e18489361dcfde6e91918f');
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     double lat = position.latitude;
@@ -151,71 +158,78 @@ for (int i=8;i<41;i=i+8) {
  // getCurrentCordinates();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-            home: Container(
-                  //height: MediaQuery.of(context).size.height,
-           // width: MediaQuery.of(context).size.width*0.70,
-            decoration: BoxDecoration(
-            image: DecorationImage(
-                  image: AssetImage("Images/Weather/$weather.png"),
-                   fit: BoxFit.cover,
-                ),
-                ),
-                 child: weather==null?Center(child: CircularProgressIndicator(backgroundColor: Colors.green)):
-                 Scaffold(
-                   backgroundColor: Colors.transparent,
-                    body: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                      children:  [
-                        SizedBox(height: 100),
-                         Icon(
-                             WeatherIcon.getIcon(weatherdescription),
-                             color: Colors.white,
-                              size: 70.0,
-                            ),
-                        //SizedBox(height: 80),
-                             SizedBox(height: 30),
-                    Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "$temperature" + ' °C',
-                                style: TextStyle(color: Colors.white, fontSize: 60.0),
-                              ),
-                            ],
-                              ),
-                              ),
-                              
-                              //SizedBox(height: 100),
-                              Text(
-                                "$place",
-                                style: TextStyle(color: Colors.white, fontSize: 40.0),
-                              ),
-                              SizedBox(height: 50),
-                              SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: <Widget>[
-                            for (var i = 0; i < 5; i++)
-                              fiveDaysForecast(
-                                  i + 1,
-                                  weathercodes1[i],
-                                  mintemp1[i],
-                                  maxtemp1[i]
-                                  ),
-                          ],
-                        ),
-                      ),
-                              
-                      ],
-                      ),
-                 ),
+    return SmartRefresher(
+      enablePullDown: true,
+      header: WaterDropHeader(),
+      controller: _refreshController,
+      onRefresh: _refreshingWeather,
+          child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+              home: Container(
+                    //height: MediaQuery.of(context).size.height,
+             // width: MediaQuery.of(context).size.width*0.70,
+              decoration: BoxDecoration(
+              image: DecorationImage(
+                    image: AssetImage("Images/Weather/$weather.png"),
+                     fit: BoxFit.cover,
                   ),
-            
-        );
+                  ),
+                   child: weather==null?Center(child: CircularProgressIndicator(backgroundColor: Colors.black)):
+                   Scaffold(
+                       backgroundColor: Colors.transparent,
+                        body: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                          children:  [
+                            SizedBox(height: 100),
+                             Icon(
+                                 WeatherIcon.getIcon(weatherdescription),
+                                 color: Colors.white,
+                                  size: 70.0,
+                                ),
+                            //SizedBox(height: 80),
+                                 SizedBox(height: 30),
+                        Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "$temperature" + ' °C',
+                                    style: TextStyle(color: Colors.white, fontSize: 60.0),
+                                  ),
+                                ],
+                                  ),
+                                  ),
+                                  
+                                  //SizedBox(height: 100),
+                                  Text(
+                                    "$place",
+                                    style: TextStyle(color: Colors.white, fontSize: 40.0),
+                                  ),
+                                  SizedBox(height: 50),
+                            SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                for (var i = 0; i < 5; i++)
+                                  fiveDaysForecast(
+                                      i + 1,
+                                      weathercodes1[i],
+                                      mintemp1[i],
+                                      maxtemp1[i]
+                                      ),
+                              ],
+                            ),
+                          ),
+                                  
+                          ],
+                          ),
+                     ),
+
+                    ),
+              
+          ),
+    );
   }
 }
 
