@@ -26,7 +26,7 @@ dependencies:
     sdk: flutter
   jiffy: ^3.0.1
   permission_handler: ^5.1.0+2
-  pedometer: ^2.1.0
+  pedometer: 
   pull_to_refresh: ^1.6.3
   connectivity: ^0.4.2
   fit_kit: ^1.1.2
