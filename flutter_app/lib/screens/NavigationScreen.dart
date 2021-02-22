@@ -3,6 +3,8 @@ import 'package:flutter_app/screens/HomeDesignFlow.dart';
 import 'package:flutter_app/screens/Statistics.dart';
 
 class NavigationBar extends StatefulWidget {
+   String uid;
+  NavigationBar({this.uid});
   @override
   _NavigationBarState createState() => _NavigationBarState();
 }
@@ -17,7 +19,7 @@ class _NavigationBarState extends State<NavigationBar> {
         body: PageView(
           controller: pages,
           children:[
-            HomeDesignFlow(index: pages),
+            HomeDesignFlow(index: pages,uid: widget.uid),
             Statistics(),//TODO Create the Statistics of the Everyday steps.
             ]
             ),

@@ -298,8 +298,8 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                 setState(()=> isloading=true);
                 try{
                                       var details=await signInWithGoogle();
-                                      await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));//TODO change it to Home Screen
+                                      String uid=await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));//TODO change it to Home Screen
                                       setState(()=> isloading=false);}
                   catch(e){
                     setState(()=> isloading= false);
@@ -354,8 +354,8 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                 setState(()=> isloading=true);
                 try{
                 var fdls=await onFacebookLogIn();
-                await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
+                Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
                 setState(()=> isloading = false);}
                 catch(e){
                   setState(()=> isloading= false);

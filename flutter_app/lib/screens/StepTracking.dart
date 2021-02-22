@@ -30,7 +30,7 @@ class _StepTrackerState extends State<StepTracker> {
   String _stepRead;
   double scorePercent;
   Connectivity netcheck = Connectivity();
-
+  
   //String _fitkitSteps;
 //Future<String> step;
 TextEditingController _stepping;
@@ -53,6 +53,7 @@ final _formKey = GlobalKey<FormState>();
    stepRead();
   goalAchieved();
   checkConnectivity();
+  savingAll();
   }
 //TODO NETWORK CONNECTIVITY CHECKING
 String checkValue(var net) {
@@ -94,6 +95,7 @@ Future<void> checkConnectivity() async {
   await stepRead();
   goalAchieved();
   await checkConnectivity();
+  savingAll();
   //accessingPermissions();
   await Future.delayed(Duration(seconds: 2));
 }
@@ -153,15 +155,23 @@ _stepsReadGoal() async {
    });
    return step;
   }
+
 //TODO Calculating the percentage from the goal
 void goalAchieved() async{
   String goal=await _stepsReadGoal();
   String achieve=await stepRead();
-  Statistics(goal: step,currentsteps: achieve);
   double achieved = (int.parse(achieve)/int.parse(goal));
   setState(() {
     scorePercent= achieved;
   });
+}
+//TODO Saving All
+void savingAll() async{
+  String goal=await _stepsReadGoal();
+  String achieve=await stepRead();
+  var prefs = await SharedPreferences.getInstance();
+  prefs.setString('currentGoal',goal);
+  prefs.setString('currentachieve',achieve);
 }
 //TODO FIT KIT APIS are introduced here.
 stepRead() async {
@@ -209,6 +219,7 @@ distanceRead() async {
   @override
   Widget build(BuildContext context) {
     StepsBackend model = StepsBackend();
+    
     return Scaffold(
         appBar: AppBar(
               automaticallyImplyLeading: false,

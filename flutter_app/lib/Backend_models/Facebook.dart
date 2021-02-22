@@ -47,7 +47,7 @@ final results = await facebook.logIn(permissions: [
     return data;
 }
 
-Future<void> signUpFaceBookSetup(String username,String imageUrl,String userId,String email,String accessToken) async{
+Future<String> signUpFaceBookSetup(String username,String imageUrl,String userId,String email,String accessToken) async{
   CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
   //DocumentReference userId = FirebaseFirestore.instance.collection('register').doc();
   //print("$fullName $email $gender");
@@ -55,7 +55,8 @@ Future<void> signUpFaceBookSetup(String username,String imageUrl,String userId,S
   print(auth);
   String firebaseuid = auth.currentUser.uid.toString(); 
   DateTime time = DateTime.now();
-  await register.doc(firebaseuid).set({'Name': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid});
+  await register.doc(firebaseuid).set({'Name': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid,'height':0,'weight':0,'age':0});
+  return firebaseuid;
   }
   //return uid;//.then((value){
     //return value.id.toString();

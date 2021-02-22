@@ -1,12 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Backend_models/GoogleBackend.dart';
 import 'package:flutter_app/screens/StepTracking.dart';
 import 'package:flutter_app/screens/Weather.dart';
 import 'Calendar.dart';
 
 class HomeDesignFlow extends StatefulWidget {
   var index;
-  HomeDesignFlow({this.index});
+  String uid;
+  HomeDesignFlow({this.index,this.uid});
   @override
   _HomeDesignFlowState createState() => _HomeDesignFlowState();
 }
@@ -19,11 +21,16 @@ Calendar(),
 StepTracker(),
 WeatherStat(),
 ];
-
+getuid() async{
+  print("Hey this is uid "+widget.uid);
+  var details=await getData(widget.uid);
+  print("ATTENTION DATA IS HERE "+details.toString());
+}
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getuid();
     
   }
   @override

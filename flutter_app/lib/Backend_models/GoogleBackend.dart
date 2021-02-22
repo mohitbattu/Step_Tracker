@@ -35,13 +35,12 @@ Future<String> signUpGoogleSetup(String name,String email,String imageurl) async
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser.uid.toString(); 
   DateTime time = DateTime.now();
-  await register.doc(uid).set({'Name': name, 'email': email,'ImageUrl': imageurl,'Log_in_time': time,'uid': uid,});
-  //return uid;//.then((value){
+  await register.doc(uid).set({'Name': name, 'email': email,'ImageUrl': imageurl,'Log_in_time': time,'uid': uid,'height':0,'weight':0,'age':0});
+  return uid;//.then((value){
     //return value.id.toString();
   //}); 
 //users.add({'displayName': displayName, 'uid': uid});
 }
-
 
 
 

@@ -8,6 +8,7 @@ import 'package:flutter_app/Backend_models/Facebook.dart';
 import 'package:flutter_app/screens/Signup.dart';
 import 'package:flutter_app/screens/NavigationScreen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validators/validators.dart' as validator;
 import 'package:flutter_app/screens/passwordreset.dart';
 class LoginScreen extends StatefulWidget {
@@ -20,6 +21,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isloading = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  @override
+  void initState() { 
+    super.initState();
+    savingCount();
+  }
+    savingCount() async{
+     var prefs = await SharedPreferences.getInstance();
+     prefs.setInt('count',0);
+  }
   @override
   Widget build(BuildContext context) {
     Loginbackend model = Loginbackend();
@@ -163,11 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _formKey.currentState.save();
                                       setState(()=> isloading=true);
                                       try{
-                                      await auth.signInWithEmailAndPassword(email: _email, password: _password).then((_){
-
-                                        Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
-                                        setState(()=> isloading=false);// Move to 6th Fragment
-                                        });}
+                                      await auth.signInWithEmailAndPassword(email: _email, password: _password);
+                                      String uid = auth.currentUser.uid.toString();
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
+                                      setState(()=> isloading=false);// Move to 6th Fragment
+                                        }
                                         catch(e){
                                           setState(()=> isloading=false);
                                           Alert(context: context,type: AlertType.error,
@@ -260,8 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       setState(()=> isloading=true);
                                       try{
                                       var gdls=await signInWithGoogle();
-                                      await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                                      String uid=await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
                                       setState(()=> isloading=false);
                                       }
                                       catch(e){
@@ -318,8 +328,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       try{
                                       var fdls=await onFacebookLogIn();
                                       print(fdls);
-                                      await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
+                                      String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
                                       setState(()=> isloading = false);}
                                       catch(e){
                                         setState(()=> isloading= false);
