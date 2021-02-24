@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,20 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/Backend_models/BasicDetails/BasicDetailsback.dart';
 import 'package:flutter_app/Backend_models/GettingUserdata.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/screens/Base_screen.dart';
 import 'package:flutter_app/screens/StepTracking.dart';
 import 'package:flutter_app/screens/Weather.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Calendar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 class HomeDesignFlow extends StatefulWidget {
   var index;
-  String uid;
-  HomeDesignFlow({this.index,this.uid});
+  HomeDesignFlow({this.index});
   @override
   _HomeDesignFlowState createState() => _HomeDesignFlowState();
 }
@@ -36,6 +38,7 @@ class _HomeDesignFlowState extends State<HomeDesignFlow> {
  TextEditingController _heightController;
 TextEditingController _weightController;
 TextEditingController _ageController;
+Connectivity netcheck = Connectivity();
 
   final _formKey = GlobalKey<FormState>();
  
@@ -45,9 +48,38 @@ Calendar(),
 StepTracker(),
 WeatherStat(),
 ];
-savingUid() async{
+String checkValue(var net) {
+  String status = '';
+  switch (net) {
+    case ConnectivityResult.none:
+      status = 'None';
+      break;
+  }
+  return status;
+}
+Future<void> checkConnectivity() async {
+    var net = await netcheck.checkConnectivity();
+    var result = checkValue(net);
+    if(result=="None"){
+        Alert(
+          context: context,
+          content: Text('You have poor or No Internet connection'),
+                  type: AlertType.error,
+      title: "No Network",
+      buttons: [DialogButton(
+            gradient: LinearGradient(colors: [
+           Color.fromRGBO(116, 116, 191, 1.0),
+          Color.fromRGBO(52, 138, 199, 1.0)]),
+          child: Text(
+          "Ok",style: TextStyle(color: Colors.white, fontSize: 20),),
+        onPressed: () => Navigator.of(context, rootNavigator: true).pop(),width: 120,)], 
+    ).show();
+    }
+ } 
+savingDetails() async{
   var prefs = await SharedPreferences.getInstance();
-  details=await getData(widget.uid);
+  String uid =prefs.getString('uid');
+  details=await getData(uid);
   prefs.setStringList('details',details);
 }
 getuid() async{
@@ -62,7 +94,6 @@ getuid() async{
     age=getdetails[4];
     weight=getdetails[5];
   });
-  
   print("ATTENTION DATA IS HERE "+details.toString());
 }
 ProgressDialog progressBar(context) {
@@ -84,15 +115,27 @@ ProgressDialog progress1 = ProgressDialog(context);
   return progress1;
 }
 signOutCredentials() async{
+  await checkConnectivity();
   var prefs=await SharedPreferences.getInstance();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String uid=prefs.getString('uid');
   final facebook = FacebookLogin();
+  print("hey this is uid:"+uid);
+  await userLogOutTime(uid);
   //await signOutGoogle();
   await _auth.signOut();
   await facebook.logOut();
+  await showNormalNotification('Logged Out','See You Back Soon!!');
+  prefs.remove('uid');
   prefs.remove('email');
 }
-
+@override
+  void didChangeDependencies() async{
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    await savingDetails();
+    await getuid();
+  }
     
 @override
   void initState() {
@@ -101,8 +144,9 @@ signOutCredentials() async{
     _heightController= TextEditingController();
     _weightController= TextEditingController();
     _ageController= TextEditingController();
-    savingUid();
+    savingDetails();
     getuid();
+    checkConnectivity();
   }
   @override
   Widget build(BuildContext context) {
@@ -245,9 +289,11 @@ signOutCredentials() async{
                      
                       if (_formKey.currentState.validate()) {
                        _formKey.currentState.save();
+                      var prefs=await SharedPreferences.getInstance();
                        await pro.show();
-                       await userHeightUpdate(widget.uid, _heightController.text);
-                       await savingUid();
+                       String uid=prefs.getString('uid');
+                       await userHeightUpdate(uid, _heightController.text);
+                       await savingDetails();
                        await getuid();
                        await pro.hide();
                        Navigator.of(context).pop();
@@ -333,9 +379,11 @@ signOutCredentials() async{
                     onPressed: () async{
                       if (_formKey.currentState.validate()) {
                        _formKey.currentState.save();
+                       var prefs=await SharedPreferences.getInstance();
                        await pro.show();
-                       await userAgeUpdate(widget.uid, _ageController.text);
-                       await savingUid();
+                       String uid=prefs.getString('uid');
+                       await userAgeUpdate(uid, _ageController.text);
+                       await savingDetails();
                        await getuid();
                         Navigator.of(context).pop();
                        await pro.hide(); 
@@ -417,9 +465,11 @@ signOutCredentials() async{
                     onPressed: () async{
                       if (_formKey.currentState.validate()) {
                        _formKey.currentState.save();
+                       var prefs=await SharedPreferences.getInstance();
                        await pro.show();
-                       await userWeightUpdate(widget.uid, _weightController.text);
-                       await savingUid();
+                       String uid=prefs.getString('uid');
+                       await userWeightUpdate(uid, _weightController.text);
+                       await savingDetails();
                        await getuid();
                        await pro.hide();
                        print("Hey weight ");

@@ -8,6 +8,8 @@ import 'screens/Base_screen.dart';
 import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotifications=FlutterLocalNotificationsPlugin();
+String messageTitle = "Empty";
+String notificationAlert = "alert";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var settingPushNotificationAndorid=AndroidInitializationSettings('app_icon');
@@ -15,7 +17,7 @@ void main() async {
   await Permission.notification.request();
   var prefs = await SharedPreferences.getInstance();
   var email=prefs.getString('email');
-   var settingInitial = InitializationSettings(android: settingPushNotificationAndorid);
+  var settingInitial = InitializationSettings(android: settingPushNotificationAndorid);
   await flutterLocalNotifications.getNotificationAppLaunchDetails();
   await flutterLocalNotifications.initialize(settingInitial,
       onSelectNotification: (String payload) async {
@@ -23,7 +25,23 @@ void main() async {
       debugPrint('notification payload: ' + payload);
     }
   });
-  await scheduleDailySixAMNotification("Hey Buddy","Grab your Shoes and run!!");
+  
+  FirebaseMessaging _fireMsg = FirebaseMessaging();
+  _fireMsg.configure(
+      onMessage: (message) async{
+          messageTitle = message["notification"]["title"];
+          notificationAlert = "New Notification Alert";
+      },
+      onResume: (message) async{
+          messageTitle = message["data"]["title"];
+          notificationAlert = "Application opened from Notification";
+      },
+      onLaunch: (message) async{
+          messageTitle = message["data"]["title"];
+          notificationAlert = "User gets Notified when Launching this App";
+      },
+    );
+  await scheduleDailySixAMNotification("Hey Buddy","Grab your Shoes and Run!!");
   runApp(MaterialApp(
     title: 'Step Tracker',
     theme: ThemeData(primaryColor: Colors.black,scaffoldBackgroundColor: Colors.black,unselectedWidgetColor: Colors.white),

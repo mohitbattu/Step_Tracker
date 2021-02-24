@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:validators/validators.dart' as validator;
@@ -105,10 +106,13 @@ class _PasswordResetState extends State<PasswordReset> {
                   setState(()=> isloading=true);
                   //setState(() {
                   try{
+                    
                   await auth.sendPasswordResetEmail(email: _email).then((_){
 Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
                   setState(()=> isloading= false);
-                  });}
+                  });
+                  showNormalNotification('Dont Worry!!','Go and Check your Gmail to reset your Password.');
+                  }
                   catch(e){
                     setState(()=> isloading= false);
                     Alert(context: context,

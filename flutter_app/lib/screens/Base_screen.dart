@@ -18,7 +18,6 @@ class _BasescreenState extends State<Basescreen> {
       title: "Step Tracker",
       home: Scaffold(
         body: Container(
-          
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             image: DecorationImage(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/Steps/stepsback.dart';
 import 'package:flutter_app/Backend_models/Widgets/circlecard.dart';
 import 'package:flutter_app/screens/Statistics.dart';
@@ -160,6 +161,9 @@ _stepsReadGoal() async {
 void goalAchieved() async{
   String goal=await _stepsReadGoal();
   String achieve=await stepRead();
+  if(int.parse(goal)==int.parse(achieve)){
+    showNotification('Congratulations!','You have reached your daily goals');
+  }
   double achieved = (int.parse(achieve)/int.parse(goal));
   setState(() {
     scorePercent= achieved;
@@ -351,6 +355,7 @@ distanceRead() async {
                         Navigator.of(context).pop(); 
                         _stepsSaveGoal(_stepping.text);
                         _stepsReadGoal();
+                        showNotification('Your Goal'+' '+_stepping.text,'Goal has been set successfully!!');
                       //TODO Pass this data to the statistics too.
                       }
                     },  

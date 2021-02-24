@@ -163,6 +163,7 @@ class _SignupFormState extends State<SignupForm> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           labelText: "Password",labelStyle: TextStyle(color: Colors.white),
+                          suffixIcon: Icon(Icons.visibility_off,color: Colors.white70),
                         ),
                         
                     validator: (String value) {
@@ -228,7 +229,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
             
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>  Navigator.of(context, rootNavigator: true).pop(),
           width: 120,
         )
       ],
@@ -302,8 +303,10 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                                       var details=await signInWithGoogle();
                                       prefs.setString('email',details['emails']);
                                       String uid=await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));//TODO change it to Home Screen
-                                      setState(()=> isloading=false);}
+                                      prefs.setString('uid',uid);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));//TODO change it to Home Screen
+                                      setState(()=> isloading=false);
+                                      }
                   catch(e){
                     setState(()=> isloading= false);
                   Alert(context: context,
@@ -361,7 +364,8 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                 var fdls=await onFacebookLogIn();
                 prefs.setString('email',fdls['email']);
                 String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
+                prefs.setString('uid', fireuid);
+                Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                 setState(()=> isloading = false);}
                 catch(e){
                   setState(()=> isloading= false);

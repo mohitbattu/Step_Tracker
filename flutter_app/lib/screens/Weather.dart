@@ -166,6 +166,9 @@ for (int i=8;i<41;i=i+8) {
    }  
 }
 
+giveWeatherIcon(String id) {
+   return WeatherIcon.getIcon(id);
+}
  // getCurrentCordinates();
   @override
   Widget build(BuildContext context) {
@@ -194,7 +197,7 @@ for (int i=8;i<41;i=i+8) {
                           children:  [
                             SizedBox(height: 100),
                              Icon(
-                                 WeatherIcon.getIcon(weatherdescription),
+                                 giveWeatherIcon(weatherdescription),
                                  color: Colors.white,
                                   size: 70.0,
                                 ),

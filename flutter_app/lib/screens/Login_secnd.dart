@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -119,8 +120,9 @@ savingCount() async{
                                       borderSide: BorderSide(color: Colors.white),
                                     ),
                                     labelText: "Password",labelStyle: TextStyle(color: Colors.white),
-                                    
+                                    suffixIcon: Icon(Icons.visibility_off,color: Colors.white70),
                                   ),
+                                  
                                   validator: (String value) {
                           if (value.length < 5) {
                     return 'Password should be minimum 5 characters';
@@ -175,9 +177,13 @@ savingCount() async{
                                       var prefs = await SharedPreferences.getInstance();
                                       try{
                                       await auth.signInWithEmailAndPassword(email: _email, password: _password);
-                                      prefs.setString('email', _email);
                                       String uid = auth.currentUser.uid.toString();
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
+                                      prefs.setString('email', _email);
+                                      prefs.setString('uid',uid);
+                                      DocumentSnapshot valuedata= await FirebaseFirestore.instance.collection('AppUsers').doc(uid).get();
+                                      String fullname = valuedata.get('fullName');
+                                      await showNormalNotification('Hey '+fullname+"! ,",'Lets Start Pushing Our Day to reach our Todays Goal!!');
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                                       setState(()=> isloading=false);
                                       // Move to 6th Fragment
                                         }
@@ -275,9 +281,10 @@ savingCount() async{
                                       try{
                                       var gdls=await signInWithGoogle();
                                       prefs.setString('email',gdls['emails']);
-                                      
                                       String uid=await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
+                                      prefs.setString('uid',uid);
+                                      await showNormalNotification('Hey '+gdls['names']+"! ,",'Lets Start Pushing Our Day to reach our Todays Goal!!');
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
 
                                       setState(()=> isloading=false);
                                       }
@@ -338,7 +345,9 @@ savingCount() async{
                                       print(fdls);
                                       prefs.setString('email',fdls['email']);
                                       String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
-                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
+                                      await showNormalNotification('Hey '+fdls['usernames']+"! ,",'Lets Start Pushing Our Day to reach our Todays Goal!!');
+                                      prefs.setString('uid', fireuid);
+                                      Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
                                       setState(()=> isloading = false);}
                                       catch(e){
                                         setState(()=> isloading= false);

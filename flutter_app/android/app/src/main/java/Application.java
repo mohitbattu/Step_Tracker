@@ -1,4 +1,4 @@
-package io.flutter.plugins.pushNotification;
+package com.example.flutter_app;;
 
 import io.flutter.app.FlutterApplication;
 import io.flutter.plugin.common.PluginRegistry;

@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/Userdatabackpart/userback.dart';
 import 'package:flutter_app/Backend_models/firebase.dart';
 import 'package:flutter_app/Backend_models/loading/loading.dart';
@@ -9,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 // ignore: must_be_immutable
 class UserData extends StatefulWidget {
   var name,email,gender;
@@ -128,8 +131,9 @@ Future takeImage() async {
                         //color: Colors.white,
                         width: MediaQuery.of(context).size.width*0.8,
                           child: TextFormField(
-                            
+                             keyboardType: TextInputType.number,
                             controller: _weightController,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),],
                             style: TextStyle(fontSize: 25, color: Colors.white),
                             decoration: InputDecoration(
                               hintText: 'Kgs',
@@ -165,6 +169,8 @@ Future takeImage() async {
                         Container(
                           width: MediaQuery.of(context).size.width*0.8,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),],
                             controller: _heightController,
                             style: TextStyle(fontSize: 25, color: Colors.white),
                             decoration: InputDecoration(
@@ -201,6 +207,8 @@ Future takeImage() async {
                         Container(
                           width: MediaQuery.of(context).size.width*0.8,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),],
                             controller: _ageController,
                             style: TextStyle(fontSize: 25, color: Colors.white),
                             decoration: InputDecoration(
@@ -243,11 +251,39 @@ Future takeImage() async {
                      if (_formKey.currentState.validate()) {
                        _formKey.currentState.save();
                        setState(()=> isloading=true);
+                       try{
                        String userid=await signUpSetup(widget.name.text,widget.email.text,widget.gender.text);
                        String imagelocation=await uploadImage(userid);
                        await userSetup(imagelocation,userid,_weightController.text,_heightController.text,_ageController.text);
+                       await showNormalNotification('Hey '+widget.name.text+"!,",'Your account has been created successfully!');
                        Navigator.push(context, MaterialPageRoute(builder:(context) => accountCreated()));
-                       setState(()=> isloading=false);
+                       setState(()=> isloading= false);
+                       }
+                       catch(e){
+                  setState(()=> isloading= false);
+                  Alert(context: context,
+                  type: AlertType.error,
+      title: "Error",
+      desc: e.toString(),
+      buttons: [
+        DialogButton(
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+
+          child: Text(
+            "Ok",
+            
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () =>  Navigator.of(context, rootNavigator: true).pop(),
+          width: 120,
+        )
+      ],
+    ).show();
+                }
+                       
                      }
                   },
                   style: ElevatedButton.styleFrom(

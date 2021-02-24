@@ -29,3 +29,9 @@ Future<void> userWeightUpdate(String uid,String weight) async {
   CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
   await register.doc(uid).update({ 'weight': weight});
 }
+
+Future<void> userLogOutTime(String uid) async {
+  CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
+  DateTime time = DateTime.now();
+  await register.doc(uid).update({ 'LogOutTime': time});
+}

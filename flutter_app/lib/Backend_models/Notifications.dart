@@ -64,3 +64,19 @@ Future<void> _configureLocalTimeZone() async {
     await flutterLocalNotifications.show(0,title,body, platformChannelSpecifics,payload: 'item x');
   }
 
+Future <void> showNormalNotification(String title,String body) async {
+    FlutterLocalNotificationsPlugin flutterLocalNotifications=FlutterLocalNotificationsPlugin();
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =AndroidNotificationDetails(
+      'show_notif',
+      'show_notif',
+      'Channel for showing notification',
+      playSound: true,
+      enableVibration: true,
+      icon: 'app_icon',
+      sound: RawResourceAndroidNotificationSound('notification')
+      );
+    const NotificationDetails platformChannelSpecifics =NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotifications.show(0,title,body, platformChannelSpecifics,payload: 'item x');
+  }
+
+
