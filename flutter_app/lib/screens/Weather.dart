@@ -1,4 +1,5 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,16 @@ class _WeatherStatState extends State<WeatherStat> {
     super.initState();
     getCurrentWeather();
     checkConnectivity();
+    bringingCustomNotification();
   }
+void bringingCustomNotification() async{
+  WeatherFactory wf = new WeatherFactory('f3e5e858f1e18489361dcfde6e91918f');
+  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  double lat = position.latitude;
+  double long = position.longitude;
+  Weather w = await wf.currentWeatherByLocation(lat,long);
+  showNotification("Today's Weather is: "+w.temperature.celsius.toInt().toString()+" °C",w.weatherDescription);
+} 
 void _refreshingWeather() async{
   await checkConnectivity();
   await getCurrentWeather();
@@ -74,7 +84,7 @@ void _refreshingWeather() async{
  } 
 
 Future<void> getCurrentWeather() async{
-     WeatherFactory wf = new WeatherFactory('f3e5e858f1e18489361dcfde6e91918f');
+    WeatherFactory wf = new WeatherFactory('f3e5e858f1e18489361dcfde6e91918f');
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     double lat = position.latitude;
     double long = position.longitude;
@@ -91,6 +101,7 @@ Future<void> getCurrentWeather() async{
       print(weatherdescription);
       place = w.areaName +","+w.country;
       temperature = w.temperature.celsius;
+
       weather = weatherstatus.replaceAll(' ', '').toLowerCase();
     });
 }
@@ -194,7 +205,7 @@ for (int i=8;i<41;i=i+8) {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "$temperature" + ' °C',
+                                    temperature.toInt().toString() + ' °C',
                                     style: TextStyle(color: Colors.white, fontSize: 60.0),
                                   ),
                                 ],
