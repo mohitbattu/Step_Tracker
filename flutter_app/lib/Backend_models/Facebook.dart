@@ -6,7 +6,6 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 Future<Map<String,String>> onFacebookLogIn() async {
   final facebook = FacebookLogin();
-
 // Log in
 final results = await facebook.logIn(permissions: [
   FacebookPermission.publicProfile,
@@ -55,7 +54,7 @@ Future<String> signUpFaceBookSetup(String username,String imageUrl,String userId
   print(auth);
   String firebaseuid = auth.currentUser.uid.toString(); 
   DateTime time = DateTime.now();
-  await register.doc(firebaseuid).set({'Name': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid,'height':0,'weight':0,'age':0});
+  await register.doc(firebaseuid).set({'fullName': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid,'height':'0','weight':'0','age':'0'});
   return firebaseuid;
   }
   //return uid;//.then((value){

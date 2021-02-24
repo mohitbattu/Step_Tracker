@@ -7,6 +7,7 @@ import 'package:flutter_app/Backend_models/Widgets/widgets.dart';
 import 'package:flutter_app/screens/User_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:validators/validators.dart' as validator;
 import 'package:flutter_app/Backend_models/signbackpart/signback.dart';
@@ -296,8 +297,10 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
                           
               onPressed: () async{
                 setState(()=> isloading=true);
-                try{
+                                     try{
+                                      var prefs = await SharedPreferences.getInstance();
                                       var details=await signInWithGoogle();
+                                      prefs.setString('email',details['emails']);
                                       String uid=await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));//TODO change it to Home Screen
                                       setState(()=> isloading=false);}
@@ -351,9 +354,12 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
               ),
                           
               onPressed: () async{
+                 
                 setState(()=> isloading=true);
+                var prefs = await SharedPreferences.getInstance();
                 try{
                 var fdls=await onFacebookLogIn();
+                prefs.setString('email',fdls['email']);
                 String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
                 Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
                 setState(()=> isloading = false);}

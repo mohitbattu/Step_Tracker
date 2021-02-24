@@ -24,7 +24,7 @@ Future<void> userSetup(String imglocation,String userid,String weight,String hei
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser.uid.toString();
   DateTime time = DateTime.now();
-  await register.doc(uid).update({'weight': weight, 'height(cms)': height, 'age': age,'imageurl': imageString , 'imagelocation':imglocation,'time': time,'uid': uid});
+  await register.doc(uid).update({'weight': weight, 'height': height, 'age': age,'ImageUrl': imageString , 'imagelocation':imglocation,'time': time,'uid': uid});
   //users.add({'displayName': displayName, 'uid': uid});
   //return;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/Backend_models/GoogleBackend.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/Backend_models/loginbackpart/loginback.dart';
 import 'package:flutter_app/Backend_models/Facebook.dart';
@@ -26,17 +27,18 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     savingCount();
   }
-    savingCount() async{
+savingCount() async{
      var prefs = await SharedPreferences.getInstance();
      prefs.setInt('count',0);
   }
+
   @override
   Widget build(BuildContext context) {
     Loginbackend model = Loginbackend();
     return isloading ? Loading():Form(
       key: _formKey,
           child: Scaffold(
-        backgroundColor: const Color(0xff121212),
+        backgroundColor: const Color(0xFF121212),
         body: SafeArea(
                 child: SingleChildScrollView(
                   child: Column(
@@ -166,17 +168,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Text("Login",style: new TextStyle(fontFamily: 'Open Sans',fontSize: 16.0,
                                       fontWeight: FontWeight.bold, color: Colors.white),
                                   ),
-                                  
-                                  
                                     onPressed: () async{
                                       if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
                                       setState(()=> isloading=true);
+                                      var prefs = await SharedPreferences.getInstance();
                                       try{
                                       await auth.signInWithEmailAndPassword(email: _email, password: _password);
+                                      prefs.setString('email', _email);
                                       String uid = auth.currentUser.uid.toString();
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
-                                      setState(()=> isloading=false);// Move to 6th Fragment
+                                      setState(()=> isloading=false);
+                                      // Move to 6th Fragment
                                         }
                                         catch(e){
                                           setState(()=> isloading=false);
@@ -266,12 +269,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ]
                                   ),
                                     onPressed: () async {
-                                      
+                                       
                                       setState(()=> isloading=true);
+                                      var prefs = await SharedPreferences.getInstance();
                                       try{
                                       var gdls=await signInWithGoogle();
+                                      prefs.setString('email',gdls['emails']);
+                                      
                                       String uid=await signUpGoogleSetup(gdls['names'],gdls['emails'],gdls['urls']);
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: uid)));
+
                                       setState(()=> isloading=false);
                                       }
                                       catch(e){
@@ -325,9 +332,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () async{
                                       //TODO Create a FaceBook Authentication.
                                       setState(()=> isloading=true);
+                                       var prefs = await SharedPreferences.getInstance();
                                       try{
                                       var fdls=await onFacebookLogIn();
                                       print(fdls);
+                                      prefs.setString('email',fdls['email']);
                                       String fireuid=await signUpFaceBookSetup(fdls['usernames'],fdls['imageUrl'],fdls['FaceBookId'],fdls['email'],fdls['accessToken']);
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar(uid: fireuid)));
                                       setState(()=> isloading = false);}

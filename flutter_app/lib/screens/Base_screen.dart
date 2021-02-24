@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/loading/loader.dart';
 import 'package:flutter_app/Backend_models/loading/loading.dart';
 import 'package:flutter_app/screens/Login_secnd.dart';
@@ -9,6 +11,7 @@ class Basescreen extends StatefulWidget {
 
 class _BasescreenState extends State<Basescreen> {
   bool isloading = false;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   Widget build(BuildContext context) {
     return isloading ? Loading(): MaterialApp(
@@ -52,6 +55,7 @@ class _BasescreenState extends State<Basescreen> {
                 //hoverElevation: 5000,
                 highlightElevation: 5,
                   onPressed: (){
+                    showNotification('Step tracker','Welcome to the Ultimate Fitness Step Tracking App');
                     setState(()=> isloading=true);
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                     setState(()=> isloading=false);
