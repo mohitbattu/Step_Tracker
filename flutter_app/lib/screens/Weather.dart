@@ -30,6 +30,7 @@ class _WeatherStatState extends State<WeatherStat> {
  List<String> mintemp1 = [];
   List<Weather> wfive=[];
   List<Weather> _fivedays=[];
+  IconData ws1;
  RefreshController _refreshController = RefreshController(initialRefresh: false);
   Connectivity netcheck = Connectivity();
   String checkValue(var net) {
@@ -167,7 +168,10 @@ for (int i=8;i<41;i=i+8) {
 }
 
 giveWeatherIcon(String id) {
-   return WeatherIcon.getIcon(id);
+  IconData ws=WeatherIcon.getIcon(id);
+  print(ws);
+  ws1=WeatherIcon.getIcon(id);
+   return ws1;
 }
  // getCurrentCordinates();
   @override
@@ -196,7 +200,7 @@ giveWeatherIcon(String id) {
                             crossAxisAlignment: CrossAxisAlignment.center,
                           children:  [
                             SizedBox(height: 100),
-                             Icon(
+                              Icon(
                                  giveWeatherIcon(weatherdescription),
                                  color: Colors.white,
                                   size: 70.0,
