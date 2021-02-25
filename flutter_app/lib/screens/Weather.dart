@@ -5,7 +5,6 @@ import 'package:weather/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:weather_icons/weather_icons.dart';
-import 'package:dynamic_weather_icons/dynamic_weather_icons.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -30,7 +29,8 @@ class _WeatherStatState extends State<WeatherStat> {
  List<String> mintemp1 = [];
   List<Weather> wfive=[];
   List<Weather> _fivedays=[];
-  IconData ws1;
+ String ws1;
+  IconData test1;
  RefreshController _refreshController = RefreshController(initialRefresh: false);
   Connectivity netcheck = Connectivity();
   String checkValue(var net) {
@@ -97,19 +97,19 @@ Future<void> getCurrentWeather() async{
       getListCodes();
       getMaxList();
       getMinList();
-      weathertype=w.weatherConditionCode.toString();
-      weatherdescription="wi-owm-day-"+weathertype;
+      //weathertype=w.weatherConditionCode.toString();
+      weatherdescription=w.weatherIcon;
+      giveWeatherIcon(weatherdescription);
       print(weatherdescription);
       place = w.areaName +","+w.country;
       temperature = w.temperature.celsius;
-
+      print("Hey the ATTENTION HERE");
       weather = weatherstatus.replaceAll(' ', '').toLowerCase();
     });
 }
 String getCode(int i){  
   print('hi get code');
-  return "wi-owm-day-"+_fivedays[i].weatherConditionCode.toString();
-      
+  return _fivedays[i].weatherIcon.toString();
 }
 String getMaxTemp(int i){
       
@@ -167,12 +167,14 @@ for (int i=8;i<41;i=i+8) {
    }  
 }
 
-giveWeatherIcon(String id) {
-  IconData ws=WeatherIcon.getIcon(id);
-  print(ws);
-  ws1=WeatherIcon.getIcon(id);
-   return ws1;
+giveWeatherIcon(String iconcode) {
+  String iconurl = "http://openweathermap.org/img/w/" + iconcode + ".png";
+  setState(() {
+    ws1=iconurl;
+  });
+  
 }
+
  // getCurrentCordinates();
   @override
   Widget build(BuildContext context) {
@@ -200,13 +202,14 @@ giveWeatherIcon(String id) {
                             crossAxisAlignment: CrossAxisAlignment.center,
                           children:  [
                             SizedBox(height: 100),
-                              Icon(
-                                 giveWeatherIcon(weatherdescription),
-                                 color: Colors.white,
-                                  size: 70.0,
-                                ),
+                            //TODO Fetch icons from net.....
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.20,
+                              child:Image.asset("Images/icons/"+weatherdescription+".png"),
+                            ),
+                              
                             //SizedBox(height: 80),
-                                 SizedBox(height: 30),
+                                 SizedBox(height: 5),
                         Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -278,11 +281,8 @@ Widget fiveDaysForecast(
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-              child: Icon(
-                             WeatherIcon.getIcon(weathercode),
-                             color: Colors.white,
-                              size: 70.0,
-                            ),
+              child: Image.asset("Images/icons/"+weathercode+".png"),
+ 
             ),
             Text(
               'High: ' + maxTemperature.toString() + ' °C',

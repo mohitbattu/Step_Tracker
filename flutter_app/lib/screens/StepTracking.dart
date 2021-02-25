@@ -92,7 +92,6 @@ Future<void> checkConnectivity() async {
   await _stepsReadGoal();
   await distanceRead();
   trackingUserActivity();
-  await grantappPermissions();
   await stepRead();
   goalAchieved();
   await checkConnectivity();
@@ -115,8 +114,6 @@ void activityPedestrian(PedestrianStatus event) {
 grantappPermissions() async{
   await Permission.location.request();
   await Permission.activityRecognition.request();
-  //await Permission.notification.request();
- // await Permission.sensors.request();
 }
 
 void accessingPermissions() async {

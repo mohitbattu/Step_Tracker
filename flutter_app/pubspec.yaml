@@ -30,7 +30,6 @@ dependencies:
   progress_dialog: ^1.2.4
   cached_network_image: ^2.5.0
   google_maps_flutter: ^1.0.3
-  jiffy: ^3.0.1
   permission_handler: ^5.1.0+2
   pedometer: 
   pull_to_refresh: ^1.6.3
@@ -38,12 +37,9 @@ dependencies:
   fit_kit: ^1.1.2
   line_chart: ^1.0.9
   weather_widget:
-  dynamic_weather_icons: ^1.1.4
   weather_icons: ^2.0.2
   weather: ^1.2.4
   geolocator: ^6.2.0
-  flutter_svg: ^0.18.1
-  http: ^0.12.2
   provider: ^4.0.4
   firebase_core: ^0.7.0
   firebase_analytics: ^1.0.4
@@ -57,14 +53,12 @@ dependencies:
   google_sign_in: ^4.5.9
   font_awesome_flutter: ^8.2.0
   flutter_login_facebook: ^0.5.0
-  injectable: ^1.0.4
   flutter_freshchat: ^1.4.0
   flutter_icons: ^1.1.0
-  get_it: ^4.0.4
   curved_navigation_bar: ^0.3.7
   fl_chart:
   percent_indicator: ^2.1.9+1
-  table_calendar: ^2.3.3
+  table_calendar: 
   intl: ^0.16.1
   shared_preferences: ^0.5.12+4
   rxdart: ^0.24.0
@@ -90,6 +84,7 @@ flutter:
   assets:
     - Images/
     - Images/Weather/
+    - Images/icons/
 
   #   - images/a_dot_ham.jpeg
 

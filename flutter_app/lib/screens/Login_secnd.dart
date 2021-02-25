@@ -199,7 +199,7 @@ savingCount() async{
                                                 Color.fromRGBO(52, 138, 199, 1.0)]),
                                                 child: Text(
                                                   "Ok",style: TextStyle(color: Colors.white, fontSize: 20),),
-                                                  onPressed: () => Navigator.pop(context),width: 120,)],).show();
+                                                  onPressed: () => Navigator.of(context, rootNavigator: true).pop(),width: 120,)],).show();
                                         }
                                       }
                                       },
@@ -275,9 +275,9 @@ savingCount() async{
                                     ]
                                   ),
                                     onPressed: () async {
-                                       
+                                       var prefs = await SharedPreferences.getInstance();
                                       setState(()=> isloading=true);
-                                      var prefs = await SharedPreferences.getInstance();
+                                      
                                       try{
                                       var gdls=await signInWithGoogle();
                                       prefs.setString('email',gdls['emails']);
@@ -285,7 +285,6 @@ savingCount() async{
                                       prefs.setString('uid',uid);
                                       await showNormalNotification('Hey '+gdls['names']+"! ,",'Lets Start Pushing Our Day to reach our Todays Goal!!');
                                       Navigator.push(context, MaterialPageRoute(builder:(context) => NavigationBar()));
-
                                       setState(()=> isloading=false);
                                       }
                                       catch(e){
@@ -306,7 +305,8 @@ savingCount() async{
             
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+
           width: 120,
         )
       ],
@@ -367,7 +367,7 @@ savingCount() async{
             
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
           width: 120,
         )
       ],

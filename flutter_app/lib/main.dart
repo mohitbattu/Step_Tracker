@@ -14,9 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var settingPushNotificationAndorid=AndroidInitializationSettings('app_icon');
   await Firebase.initializeApp();
-  await Permission.notification.request();
-  var prefs = await SharedPreferences.getInstance();
-  var email=prefs.getString('email');
+ // email=await gettingData();
   var settingInitial = InitializationSettings(android: settingPushNotificationAndorid);
   await flutterLocalNotifications.getNotificationAppLaunchDetails();
   await flutterLocalNotifications.initialize(settingInitial,
@@ -42,8 +40,35 @@ void main() async {
       },
     );
   await scheduleDailySixAMNotification("Hey Buddy","Grab your Shoes and Run!!");
-  runApp(MaterialApp(
+  runApp(Welcome());
+}
+class Welcome extends StatefulWidget {
+  @override
+  _WelcomeState createState() => _WelcomeState();
+}
+
+class _WelcomeState extends State<Welcome> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String email;
+  
+Future<void> getEmail() async{
+    var prefs= await _prefs;
+    String em=prefs.getString('email');
+    setState(() {
+      email=em;
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getEmail();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
     title: 'Step Tracker',
     theme: ThemeData(primaryColor: Colors.black,scaffoldBackgroundColor: Colors.black,unselectedWidgetColor: Colors.white),
-    home: email==null ? Basescreen():NavigationBar()));
+    home: email==null ? Basescreen():NavigationBar());
+  }
 }

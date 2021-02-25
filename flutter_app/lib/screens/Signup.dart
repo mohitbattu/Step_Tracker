@@ -325,7 +325,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
             
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>  Navigator.of(context, rootNavigator: true).pop(),
           width: 120,
         )
       ],
@@ -385,7 +385,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
             
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>  Navigator.of(context, rootNavigator: true).pop(),
           width: 120,
         )
       ],
