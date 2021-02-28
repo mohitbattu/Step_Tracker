@@ -12,7 +12,7 @@ class _NavigationBarState extends State<NavigationBar> {
   String userid;
    PageController pages = PageController(initialPage: 0);
     getUID() async{
-     var prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
      setState(() {
        userid=prefs.getString('uid');
      });

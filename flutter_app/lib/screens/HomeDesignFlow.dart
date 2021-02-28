@@ -77,13 +77,13 @@ Future<void> checkConnectivity() async {
     }
  } 
 savingDetails() async{
-  var prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   String uid =prefs.getString('uid');
   details=await getData(uid);
   prefs.setStringList('details',details);
 }
 getuid() async{
-  var prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   getdetails=prefs.getStringList('details');
   print(getdetails);
   setState(() {
@@ -116,7 +116,7 @@ ProgressDialog progress1 = ProgressDialog(context);
 }
 signOutCredentials() async{
   await checkConnectivity();
-  var prefs=await SharedPreferences.getInstance();
+  SharedPreferences prefs=await SharedPreferences.getInstance();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String uid=prefs.getString('uid');
   final facebook = FacebookLogin();

@@ -12,7 +12,8 @@ Future<List<String>> getData(String uid) async{
   String height = valuedata.get('height');
   String age = valuedata.get('age');
   String weight = valuedata.get('weight');
-  List<String> data= [image,fullname,email,height,age,weight];
+  String stepcount=valuedata.get('daily_step_count');
+  List<String> data= [image,fullname,email,height,age,weight,stepcount];
   return data;
 }
 Future<void> userHeightUpdate(String uid,String height) async {
@@ -34,4 +35,9 @@ Future<void> userLogOutTime(String uid) async {
   CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
   DateTime time = DateTime.now();
   await register.doc(uid).update({ 'LogOutTime': time});
+}
+
+Future<void> dailySteps(String uid,String stepp) async {
+  CollectionReference register = FirebaseFirestore.instance.collection('AppUsers');
+  await register.doc(uid).update({ 'daily_step_count': stepp});
 }

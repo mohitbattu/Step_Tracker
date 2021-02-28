@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_app/Backend_models/GettingUserdata.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -16,12 +17,16 @@ class _StatisticsState extends State<Statistics> {
   String goaling;
   String achieving;
   List<double> liststep;
-  int count=0;
-  List<double> presenttime;
-  List<double> weektime;
-  List<double> deadline;
-  List<double> actualstepping;
-   var stepper;
+  List<String> constr;
+  //int count=0;
+  //List<double> presenttime;
+  //List<double> weektime;
+  //List<double> deadline;
+  //List<double> actualstepping;
+   List<String> stepper;
+   List<String> details;
+    int counting;
+    int totalcount;
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   Connectivity netcheck = Connectivity();
   String checkValue(var net) {
@@ -36,7 +41,6 @@ class _StatisticsState extends State<Statistics> {
 void _refreshingStatistics() async{
   //TODO Write a refreshing Widget.
   await updateList();
-  await weekTime();
   await checkConnectivity();
   await Future.delayed(Duration(seconds:2));
     _refreshController.refreshCompleted();
@@ -66,50 +70,10 @@ void _refreshingStatistics() async{
     int currentdate=days[date];
     return currentdate;
   }
-  List<double> splitString(String id){
-    var arr=id.split(' ');
-    var timezone=arr[1].split(':');
-    var date=arr[0].split('-');
-    var updated=date+timezone;
-    List<double> updatedAsInt = updated.map((data) => double.parse(data)).toList();
-    return updatedAsInt;
-  }
-gettingWeektime(int counts) async{
-  var prefs = await SharedPreferences.getInstance();
-  if(counts==0){
-    String timelimit=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,24,0).add(Duration(days: 7)).toString();
-    print(timelimit);
-    List<double> mod=splitString(timelimit);
-    weektime=mod;
-    prefs.setStringList('weektim', weektime.map((data) => (data).toString()).toList());
-    prefs.setInt('count',1);
-    }
-}
-weekTime() async{
-    var prefs = await SharedPreferences.getInstance();
-    int counts=prefs.get('count');
-    String present=DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,DateTime.now().hour,DateTime.now().minute,DateTime.now().second).toString();
-    List<double> getCurr=splitString(present);
-    print(getCurr);
-    await gettingWeektime(counts);
-    List<String> dead=prefs.getStringList('weektim');
-    List<double> deadline=dead.map((data) => double.parse(data)).toList();
-    print(deadline);
-    if(deadline[1]<=getCurr[1]){
-      if(deadline[2]<=getCurr[2]){
-        if(deadline[3]<=getCurr[3]){
-          print('time duration is over for ');
-          prefs.setInt('count',0);
-          dayli=[0.0,0.0,0.0,0.0,0.0,0.0,0.0];
-          prefs.setStringList('dayli',dayli.map((data) => (data).toString()).toList());
-        }
-      }
-    }
-  }
   Future<String> checkGoalAch(String achieved) async{
     double sum=5000.0;
     double add;
-    var prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String goal=prefs.get('currentGoal');
     if(int.parse(goal)<=int.parse(achieved)){
       for(int i=0;i<1;i++){
@@ -123,42 +87,82 @@ weekTime() async{
       }
       
   }
-void _savinglistStep(List<double> liststepper,int numberday,String achieved) async{
-  var prefs = await SharedPreferences.getInstance();
- liststepper[numberday]=double.parse(achieved);
- prefs.setStringList('liststep1', liststepper.map((data) =>(data).toString()).toList());
-}
+int checkList(List<String> vad){
+    counting=0;
+    for(int i=0;i<vad.length;i++){
+      if(int.parse(vad[i])==0){
+        counting+=1;
+      }
+    }
+    return counting;
+  }
+  saveList(List<String> value) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList('stepup',value);
+  }
  updateList() async{
-    var prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String uid=prefs.getString('uid');
+    details=await getData(uid);
     String achieved =prefs.get('currentachieve');
     String goal= await checkGoalAch(achieved);
     print(double.parse(achieved));
     int daynumber=getcurrentday();
-   stepper= [0.0,0.0,0.0,0.0,0.0,0.0,0.0];
-    List<String> dead=prefs.getStringList('dayli');
-    if(dead!=null){
-    deadline=dead.map((data) => double.parse(data)).toList();
+    print(daynumber);
+    List<String> steer=prefs.getStringList('stepup');
+    print(steer);
+    if(steer!=null){
+      print('HEY this is steer');
+      List<int> conint=steer.map((data) => int.parse(data)).toList();
+      print('HEY this is coint'+conint.toString());
+      constr=conint.map((data) => data.toString()).toList();
+      print('constr'+constr.toString());
     }
-    print(dead);
-   // print(deadline);
-    liststep=deadline??stepper;
-    _savinglistStep(liststep,daynumber,achieved);
-    List<String> actualdata=prefs.getStringList('liststep1');
+    stepper=constr??[];//constr??
+    String daily=details[6];
+    for(int i=0;i<7;i++){
+     // print("Number of zeros"+checkList([0.0, 0.0, 0.0, 0.0, 47.0, 0.0, 0.0]).toString());
+     print('HEY'+i.toString());
+      if(i==daynumber&&checkList(stepper)!=0){
+        print('First loop');
+        try{
+        print('hey');
+         stepper[daynumber]=daily;
+          }on RangeError{
+            print('HEY');
+            stepper.insert(daynumber,daily);
+          }
+      }
+      else if(stepper.length==i){
+        print('Second loop');
+        stepper.insert(i,'0');
+        print(stepper);
+      }else if(checkList(stepper)==0){
+        print('third loop');
+        for(int i=0;i<7;i++){
+          stepper[i]='0';
+        }
+        print(stepper);
+      }
+     // saveList(stepper);
+    }
+    print(stepper);
+   await saveList(stepper);
+    print('Hi updated steps'+prefs.getStringList('stepup').toString()); 
     setState(() {
       achieving=achieved;
       if(goal!=achieved){
         goaling = goal;
       }
       print(daynumber);
-      actualstepping=actualdata.map((data) => double.parse(data)).toList();
+      liststep=prefs.getStringList('stepup').map((data) => double.parse(data)).toList();
+      //actualstepping=actualdata.map((data) => double.parse(data)).toList();
     });
   }
 @override
 void initState() { 
   super.initState();
-  
   updateList();
-  weekTime();
   checkConnectivity();
 }
 
@@ -287,49 +291,49 @@ void initState() {
                     BarChartGroupData(
                       x: 0,
                       barRods: [
-                        BarChartRodData(y: actualstepping[0], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[0], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                     BarChartGroupData(
                       x: 1,
                       barRods: [
-                        BarChartRodData(y: actualstepping[1], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[1], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                     BarChartGroupData(
                       x: 2,
                       barRods: [
-                        BarChartRodData(y:actualstepping[2],colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y:liststep[2],colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                     BarChartGroupData(
                       x: 3,
                       barRods: [
-                        BarChartRodData(y: actualstepping[3], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[3], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                     BarChartGroupData(
                       x: 4,
                       barRods: [
-                        BarChartRodData(y: actualstepping[4], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[4], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                     BarChartGroupData(
                       x: 5,
                       barRods: [
-                        BarChartRodData(y: actualstepping[5], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[5], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),
                      BarChartGroupData(
                       x: 6,
                       barRods: [
-                        BarChartRodData(y: actualstepping[6], colors: [Colors.lightBlueAccent, Colors.greenAccent])
+                        BarChartRodData(y: liststep[6], colors: [Colors.lightBlueAccent, Colors.greenAccent])
                       ],
                       showingTooltipIndicators: [0],
                     ),

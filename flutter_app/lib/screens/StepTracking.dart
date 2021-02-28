@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/Backend_models/GettingUserdata.dart';
 import 'package:flutter_app/Backend_models/Notifications.dart';
 import 'package:flutter_app/Backend_models/Steps/stepsback.dart';
 import 'package:flutter_app/Backend_models/Widgets/circlecard.dart';
@@ -26,8 +27,10 @@ class _StepTrackerState extends State<StepTracker> {
   String distances;
   final GlobalKey<RefreshIndicatorState> _refreshkey =new GlobalKey<RefreshIndicatorState>();
   Stream<PedestrianStatus> _pedestrianStatusStream;
+  Stream<StepCount> _pedestrianCounting;
   String step;
   String _pedestrianStatus = '';
+  String _pedestrianCount;
   String _stepRead;
   double scorePercent;
   Connectivity netcheck = Connectivity();
@@ -38,7 +41,13 @@ TextEditingController _stepping;
 final _formKey = GlobalKey<FormState>();
 
 //Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
+@override
+  void didChangeDependencies() async{
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    await stepRead();
+    await updateDailySteps();
+  }
 
 //TODO INIT STATE Introduced HERE.
   @override
@@ -47,6 +56,7 @@ final _formKey = GlobalKey<FormState>();
     super.initState();
   accessingPermissions();
   grantappPermissions();
+  updateDailySteps();
    _stepsReadGoal();
    caloriesRead();
    distanceRead();
@@ -94,6 +104,7 @@ Future<void> checkConnectivity() async {
   trackingUserActivity();
   await stepRead();
   goalAchieved();
+  await updateDailySteps();
   await checkConnectivity();
   savingAll();
   //accessingPermissions();
@@ -105,11 +116,20 @@ void activityPedestrian(PedestrianStatus event) {
       _pedestrianStatus = event.status;
     });
   }
+  void stepCount(StepCount event) {
+    int stp=event.steps;
+    setState(() {
+      _pedestrianCount = stp.toString();
+    });
+  }
   void trackingUserActivity(){
+    _pedestrianCounting =Pedometer.stepCountStream;
     _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
     _pedestrianStatusStream.listen(activityPedestrian);
+    _pedestrianCounting.listen(stepCount);
     if(!mounted) return;
   }
+
 //TODO PERMISSIONS METHODS....  
 grantappPermissions() async{
   await Permission.location.request();
@@ -138,12 +158,12 @@ void accessingPermissions() async {
 }
 //TODO SHARED PREFERENCES...
 _stepsSaveGoal(String stepped) async {
-  var prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('stepsgoal',stepped);
   }
 
 _stepsReadGoal() async {
-    var prefs = await SharedPreferences.getInstance();
+   SharedPreferences prefs = await SharedPreferences.getInstance();
     var stepper =prefs.getString('stepsgoal')??'10000';
     print("hey this is read:"+stepper);
    setState((){
@@ -153,6 +173,13 @@ _stepsReadGoal() async {
    });
    return step;
   }
+//TODO Updating the userdaily Steps Goal
+Future<void> updateDailySteps() async{
+SharedPreferences prefs = await SharedPreferences.getInstance();
+String uid=prefs.getString('uid');
+String achieve=await stepRead();
+await dailySteps(uid,achieve);
+}
 
 //TODO Calculating the percentage from the goal
 void goalAchieved() async{
@@ -254,12 +281,21 @@ distanceRead() async {
                         percent: scorePercent,
                         center:  Column(
                           children: [
-                            SizedBox(height:100),
+                            SizedBox(height:45),
                             Icon(_pedestrianStatus == 'walking' ? Icons.directions_walk : _pedestrianStatus == 'stopped'? Icons.accessibility_new
                                                           : Icons.error,
-                                                size: 100,color: Colors.white,
+                                                size: 68,color: Colors.white,
                                  ),
                              Text(_pedestrianStatus,style: _pedestrianStatus == 'walking' || _pedestrianStatus == 'stopped'? TextStyle(fontSize: 20,color: Colors.white): TextStyle(fontSize: 10, color: Colors.red),),
+                       
+                            SizedBox(height:15),
+                             Text("Total Number of Steps Taken:",
+                              style: TextStyle(fontFamily: 'Lora',fontSize: 17.0, fontWeight: FontWeight.bold,color: Colors.white),
+                                  ),
+                            SizedBox(height: 15),
+                            Text(_pedestrianCount,
+                              style: TextStyle(fontFamily: 'Lora',fontSize: 60.0, fontWeight: FontWeight.bold,color: Colors.white),
+                                  ),
               ]
               ),
                         progressColor: Colors.purple[400],

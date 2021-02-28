@@ -299,7 +299,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
               onPressed: () async{
                 setState(()=> isloading=true);
                                      try{
-                                      var prefs = await SharedPreferences.getInstance();
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
                                       var details=await signInWithGoogle();
                                       prefs.setString('email',details['emails']);
                                       String uid=await signUpGoogleSetup(details['names'],details['emails'],details['urls']);
@@ -359,7 +359,7 @@ Navigator.push(context, MaterialPageRoute(builder:(context) => UserData(name: _f
               onPressed: () async{
                  
                 setState(()=> isloading=true);
-                var prefs = await SharedPreferences.getInstance();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
                 try{
                 var fdls=await onFacebookLogIn();
                 prefs.setString('email',fdls['email']);

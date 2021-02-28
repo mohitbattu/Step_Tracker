@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     savingCount();
   }
 savingCount() async{
-     var prefs = await SharedPreferences.getInstance();
+     SharedPreferences prefs = await SharedPreferences.getInstance();
      prefs.setInt('count',0);
   }
 
@@ -174,7 +174,7 @@ savingCount() async{
                                       if (_formKey.currentState.validate()) {
                                       _formKey.currentState.save();
                                       setState(()=> isloading=true);
-                                      var prefs = await SharedPreferences.getInstance();
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
                                       try{
                                       await auth.signInWithEmailAndPassword(email: _email, password: _password);
                                       String uid = auth.currentUser.uid.toString();
@@ -275,7 +275,7 @@ savingCount() async{
                                     ]
                                   ),
                                     onPressed: () async {
-                                       var prefs = await SharedPreferences.getInstance();
+                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                       setState(()=> isloading=true);
                                       
                                       try{
@@ -339,7 +339,7 @@ savingCount() async{
                                     onPressed: () async{
                                       //TODO Create a FaceBook Authentication.
                                       setState(()=> isloading=true);
-                                       var prefs = await SharedPreferences.getInstance();
+                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                       try{
                                       var fdls=await onFacebookLogIn();
                                       print(fdls);
