@@ -1,8 +1,8 @@
+import 'package:cupertino_back_gesture/cupertino_back_gesture.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/NavigationScreen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/Base_screen.dart';
 import 'package:flutter_app/Backend_models/Notifications.dart';
@@ -67,8 +67,15 @@ Future<void> getEmail() async{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    title: 'Step Tracker',
-    theme: ThemeData(primaryColor: Colors.black,scaffoldBackgroundColor: Colors.black,unselectedWidgetColor: Colors.white),
-    home: email==null ? Basescreen():NavigationBar());
+          title: 'Step Tracker',
+          theme: ThemeData(primaryColor: Colors.black,scaffoldBackgroundColor: Colors.black,unselectedWidgetColor: Colors.white,
+          pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      }
+    ),
+          ),
+          home: email==null ? Basescreen():NavigationBar()
+          );
   }
 }

@@ -24,6 +24,8 @@ dependencies:
   flutter:
   
     sdk: flutter
+  fluttertoast: ^7.1.8
+  cupertino_back_gesture: ^0.0.4+1
   timezone: ^0.6.1
   firebase_messaging: ^5.1.4
   flutter_local_notifications: ^4.0.1+1
@@ -39,6 +41,7 @@ dependencies:
   weather_widget:
   weather_icons: ^2.0.2
   weather: ^1.2.4
+  syncfusion_flutter_calendar: ^18.4.44
   geolocator: ^6.2.0
   provider: ^4.0.4
   firebase_core: ^0.7.0

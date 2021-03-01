@@ -47,6 +47,9 @@ final _formKey = GlobalKey<FormState>();
     super.didChangeDependencies();
     await stepRead();
     await updateDailySteps();
+    await _stepsReadGoal();
+    goalAchieved();
+
   }
 
 //TODO INIT STATE Introduced HERE.
@@ -98,6 +101,7 @@ Future<void> checkConnectivity() async {
 //TODO REFRESH WIDGET.
   Future<void> refreshProp() async{
   _refreshkey.currentState?.show(atTop: false);
+  await checkConnectivity();
   await caloriesRead();
   await _stepsReadGoal();
   await distanceRead();
@@ -105,7 +109,6 @@ Future<void> checkConnectivity() async {
   await stepRead();
   goalAchieved();
   await updateDailySteps();
-  await checkConnectivity();
   savingAll();
   //accessingPermissions();
   await Future.delayed(Duration(seconds: 2));

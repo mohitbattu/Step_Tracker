@@ -51,10 +51,23 @@ Future<String> signUpFaceBookSetup(String username,String imageUrl,String userId
   //DocumentReference userId = FirebaseFirestore.instance.collection('register').doc();
   //print("$fullName $email $gender");
   FirebaseAuth auth = FirebaseAuth.instance;
+  DocumentSnapshot valuedata;
+  String height;
+  String age;
+  String weight;
   print(auth);
-  String firebaseuid = auth.currentUser.uid.toString(); 
+  String firebaseuid = auth.currentUser.uid.toString();
+  valuedata= await FirebaseFirestore.instance.collection('AppUsers').doc(firebaseuid).get();
+   try{
+  valuedata= await FirebaseFirestore.instance.collection('AppUsers').doc(firebaseuid).get();
+  height = valuedata.get('height')??'0';
+  age = valuedata.get('age')??'0';
+  weight = valuedata.get('weight')??'0';
+  }catch(e){
+    print('Document doesnt exist');
+  }
   DateTime time = DateTime.now();
-  await register.doc(firebaseuid).set({'fullName': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid,'height':'0','weight':'0','age':'0'});
+  await register.doc(firebaseuid).set({'fullName': username, 'email': email,'ImageUrl': imageUrl,'Facebookid':userId,'Log_in_time': time,'accessToken':accessToken,'firebaseuid': firebaseuid,'height':height,'weight':weight,'age':age});
   return firebaseuid;
   }
   //return uid;//.then((value){
